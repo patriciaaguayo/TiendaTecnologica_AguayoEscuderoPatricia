@@ -17,5 +17,6 @@ public class TiendaTecnologica {
         int suma = 0;
         suma += n+1;
         System.out.println("Mi numero más uno es " + suma);
+        System.out.println("Mi numero más uno es " + suma);
     }
 }
