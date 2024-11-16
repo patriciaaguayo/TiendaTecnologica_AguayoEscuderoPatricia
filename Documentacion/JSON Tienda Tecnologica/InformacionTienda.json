@@ -18,12 +18,136 @@
                         },
                         "imagenes": ["imagen1.jpg", "imagen2.jpg"],
                         "inventario": 10
+                    }, 
+                    
+                    {
+                        "id":102,
+                        "nombre":"Motorola",
+                        "precio": 599.90,
+                        "descripcion": "El móvil más resistente del mercado.",
+                        "caracteristicas": {
+                                "pantalla": "4.2 pulgadas",
+                                "camara": "30 MP",
+                                "bateria": "5000 mAh"
+                        },
+                        "imagenes": ["imagen3.jpg", "imagen4.jpg"], 
+                        "inventario": 15
                     },
-                    // ... otros productos
+
+                    {
+                        "id": 103,
+                        "nombre": "Nokia",
+                        "precio": 700.50,
+                        "descripcion": "Te rompo la cara como me tires",
+                        "caracteristicas":{
+                            "pantalla":"3.5 pulgadas",
+                            "camara": "40 MP",
+                            "bateria": "4800 mAh"
+                        },
+                        "imagenes":["imagen5.jpg", "imagen6.jpg"],
+                        "inventario": 12
+                    }
                 ]
             },
-            // ... otras categorías
+
+            {
+                "id": 2,
+                "nombre": "Ropa",
+                "productos": [
+                    {
+                        "id": 104,
+                        "nombre": "Camisa Playera",
+                        "precio": 39.99,
+                        "descripcion": "La más fresca para el verano.",
+                        "caracteristicas": {
+                            "tejido": "Lino",
+                            "color": "Verde",
+                            "corte": "Carioca"
+                        },
+                        "imagenes": ["imagen7.jpg", "imagen8.jpg"],
+                        "inventario": 14
+                    }, 
+                    
+                    {
+                        "id":105,
+                        "nombre":"Vaquero Roto",
+                        "precio": 59.90,
+                        "descripcion": "Más chick que nunca.",
+                        "caracteristicas": {
+                                "tejido": "Algodón",
+                                "color": "Azul Claro",
+                                "corte": "Pitillo"
+                        },
+                        "imagenes": ["imagen9.jpg", "imagen10.jpg"], 
+                        "inventario": 11
+                    },
+
+                    {
+                        "id": 106,
+                        "nombre": "Jersey Listas",
+                        "precio": 20.50,
+                        "descripcion": "A la moda para este invierno",
+                        "caracteristicas":{
+                            "tejido":"Algodón",
+                            "color": "Azul Marino",
+                            "corte": "Bombacho"
+                        },
+                        "imagenes":["imagen11.jpg", "imagen12.jpg"],
+                        "inventario": 18
+                    }
+                ]
+            },
+
+            {
+                "id": 3,
+                "nombre": "Funkos",
+                "productos": [
+                    {
+                        "id": 107,
+                        "nombre": "Mickey Halloween",
+                        "precio": 49.99,
+                        "descripcion": "El ratón más escalofriante.",
+                        "caracteristicas": {
+                            "altura": "15 cm",
+                            "numero": "1493",
+                            "personaje": "Mickey"
+                        },
+                        "imagenes": ["imagen13.jpg", "imagen14.jpg"],
+                        "inventario": 20
+                    }, 
+                    
+                    {
+                        "id":108,
+                        "nombre":"Yu Gi Oh! Pelea",
+                        "precio": 59.90,
+                        "descripcion": "Listo para una pelea de cartas.",
+                        "caracteristicas": {
+                                "altura": "15 cm",
+                                "numero": "387",
+                                "personaje": "Yami Yugi"
+                        },
+                        "imagenes": ["imagen15.jpg", "imagen16.jpg"], 
+                        "inventario": 23
+                    },
+
+                    {
+                        "id": 109,
+                        "nombre": "Spider-Man novato",
+                        "precio": 50.50,
+                        "descripcion": "Preparado la luchar contra el mal.",
+                        "caracteristicas":{
+                            "altura":"15 cm",
+                            "numero": "222",
+                            "personaje": "Spider-Man"
+                        },
+                        "imagenes":["imagen17.jpg", "imagen18.jpg"],
+                        "inventario": 30
+                    }
+                ]
+            }
+            
         ],
+
         "usuarios": [
             {
                 "id": 1,
@@ -41,10 +165,85 @@
                         "cantidad": 2,
                         "fecha": "2023-11-14"
                     },
-                    // ... otras compras
+
+                    {
+                        "productoId": 104,
+                        "cantidad": 1,
+                        "fecha": "2024-10-25"
+                    },
+
+                    {
+                        "productoId": 107,
+                        "cantidad": 3,
+                        "fecha": "2024-10-14"
+                    }
+                    
                 ]
             },
-            // ... otros usuarios
+
+            {
+                "id": 2,
+                "nombre": "Paco Porros",
+                "email": "muchoporro@gmail.com",
+                "direccion": {
+                    "calle": "Calle Coca",
+                    "numero": 666,
+                    "ciudad": "Cuenca",
+                    "pais": "España"
+                },
+                "historialCompras": [
+                    {
+                        "productoId": 102,
+                        "cantidad": 1,
+                        "fecha": "2023-09-25"
+                    },
+
+                    {
+                        "productoId": 105,
+                        "cantidad": 2,
+                        "fecha": "2024-08-25"
+                    },
+
+                    {
+                        "productoId": 108,
+                        "cantidad": 1,
+                        "fecha": "2024-12-31"
+                    }
+                    
+                ]
+            },
+
+            {
+                "id": 3,
+                "nombre": "Dora Exploradora",
+                "email": "tupaseitomochila@gmail.com",
+                "direccion": {
+                    "calle": "Calle Botas",
+                    "numero": 456,
+                    "ciudad": "Huelva",
+                    "pais": "España"
+                },
+                "historialCompras": [
+                    {
+                        "productoId": 103,
+                        "cantidad": 1,
+                        "fecha": "2022-03-17"
+                    },
+
+                    {
+                        "productoId": 106,
+                        "cantidad": 3,
+                        "fecha": "2023-12-03"
+                    },
+
+                    {
+                        "productoId": 109,
+                        "cantidad": 5,
+                        "fecha": "2024-12-25"
+                    }
+                    
+                ]
+            }
         ]
     }
  }
