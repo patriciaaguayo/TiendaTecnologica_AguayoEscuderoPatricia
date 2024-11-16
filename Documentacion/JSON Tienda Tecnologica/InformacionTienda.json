@@ -1,0 +1,50 @@
+{
+    "tienda": {
+        "nombre": "Mi Tienda Online",
+        "categorias": [
+            {
+                "id": 1,
+                "nombre": "Electrónica",
+                "productos": [
+                    {
+                        "id": 101,
+                        "nombre": "Smartphone",
+                        "precio": 999.99,
+                        "descripcion": "El último smartphone del mercado.",
+                        "caracteristicas": {
+                            "pantalla": "6.5 pulgadas",
+                            "camara": "48 MP",
+                            "bateria": "4500 mAh"
+                        },
+                        "imagenes": ["imagen1.jpg", "imagen2.jpg"],
+                        "inventario": 10
+                    },
+                    // ... otros productos
+                ]
+            },
+            // ... otras categorías
+        ],
+        "usuarios": [
+            {
+                "id": 1,
+                "nombre": "Juan Pérez",
+                "email": "juanperez@example.com",
+                "direccion": {
+                    "calle": "Calle Principal",
+                    "numero": 123,
+                    "ciudad": "Madrid",
+                    "pais": "España"
+                },
+                "historialCompras": [
+                    {
+                        "productoId": 101,
+                        "cantidad": 2,
+                        "fecha": "2023-11-14"
+                    },
+                    // ... otras compras
+                ]
+            },
+            // ... otros usuarios
+        ]
+    }
+ }
