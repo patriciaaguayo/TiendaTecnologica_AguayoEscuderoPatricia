@@ -183,10 +183,10 @@
 
             {
                 "id": 2,
-                "nombre": "Paco Porros",
-                "email": "muchoporro@gmail.com",
+                "nombre": "María López",
+                "email": "marialopez@gmail.com",
                 "direccion": {
-                    "calle": "Calle Coca",
+                    "calle": "Calle Carrión",
                     "numero": 666,
                     "ciudad": "Cuenca",
                     "pais": "España"
@@ -215,10 +215,10 @@
 
             {
                 "id": 3,
-                "nombre": "Dora Exploradora",
-                "email": "tupaseitomochila@gmail.com",
+                "nombre": "Juana Locain",
+                "email": "juanalocain@gmail.com",
                 "direccion": {
-                    "calle": "Calle Botas",
+                    "calle": "Calle Puertas",
                     "numero": 456,
                     "ciudad": "Huelva",
                     "pais": "España"
