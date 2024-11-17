@@ -13,8 +13,12 @@ public class InterfazInicio extends javax.swing.JFrame {
     /**
      * Creates new form InterfazInicio
      */
+    
+    Conexion conex = new Conexion();
+    
     public InterfazInicio() {
         initComponents();
+        conex.getConnection();
     }
 
     /**
