@@ -38,11 +38,10 @@ public class CrearBBDD {
             // Crear tablas si no existen
             
                 String createUsersTable = """
-                    CREATE IF NOT EXIST TABLE users (
-                        id INT PRIMARY KEY,
-                        name VARCHAR(100),
-                        email VARCHAR(100),
-                        isActive BOOLEAN
+                    CREATE TABLE IF NOT EXISTS usuarios (
+                        idUsuario INT PRIMARY KEY,
+                        nombreUsuario VARCHAR(100),
+                        email VARCHAR(100)
                     );
                 """;
                 conexion.createStatement().execute(createUsersTable);
@@ -50,10 +49,10 @@ public class CrearBBDD {
 
             
                 String createProductsTable = """
-                    CREATE TABLE products (
-                        id INT PRIMARY KEY,
-                        name VARCHAR(100),
-                        category VARCHAR(50),
+                    CREATE TABLE IF NOT EXISTS productos (
+                        idProducto INT PRIMARY KEY,
+                        nombreProducto VARCHAR(100),
+                        cate VARCHAR(50),
                         price DECIMAL(10, 2)
                     );
                 """;
@@ -61,7 +60,7 @@ public class CrearBBDD {
             
 
                 String createOrdersTable = """
-                    CREATE TABLE orders (
+                    CREATE TABLE IF NOT EXISTS historial (
                         orderId INT PRIMARY KEY,
                         userId INT,
                         totalPrice DECIMAL(10, 2),
@@ -73,7 +72,7 @@ public class CrearBBDD {
             
 
                 String createOrderProductsTable = """
-                    CREATE TABLE order_products (
+                    CREATE TABLE IF NOT EXISTS order_products (
                         orderId INT,
                         productId INT,
                         quantity INT,
