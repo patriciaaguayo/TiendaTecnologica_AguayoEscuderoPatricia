@@ -151,6 +151,7 @@
             <Property name="text" type="java.lang.String" value="Usuarios"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BotonUsuariosMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonUsuariosActionPerformed"/>
           </Events>
         </Component>
@@ -168,6 +169,7 @@
             <Property name="text" type="java.lang.String" value="Historial"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BotonHistorialMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonHistorialActionPerformed"/>
           </Events>
         </Component>

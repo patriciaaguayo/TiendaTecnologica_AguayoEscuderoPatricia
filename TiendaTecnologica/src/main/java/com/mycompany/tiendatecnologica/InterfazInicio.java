@@ -83,6 +83,11 @@ public class InterfazInicio extends javax.swing.JFrame {
         BotonUsuarios.setFont(new java.awt.Font("Helvetica Neue", 0, 36)); // NOI18N
         BotonUsuarios.setForeground(new java.awt.Color(255, 255, 255));
         BotonUsuarios.setText("Usuarios");
+        BotonUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonUsuariosMouseClicked(evt);
+            }
+        });
         BotonUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonUsuariosActionPerformed(evt);
@@ -93,6 +98,11 @@ public class InterfazInicio extends javax.swing.JFrame {
         BotonHistorial.setFont(new java.awt.Font("Helvetica Neue", 0, 36)); // NOI18N
         BotonHistorial.setForeground(new java.awt.Color(255, 255, 255));
         BotonHistorial.setText("Historial");
+        BotonHistorial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonHistorialMouseClicked(evt);
+            }
+        });
         BotonHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonHistorialActionPerformed(evt);
@@ -196,18 +206,32 @@ public class InterfazInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonProductosActionPerformed
 
     private void BotonProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonProductosMouseClicked
-        // TODO add your handling code here:
+        
         InterfazProductos productos = new InterfazProductos();
         productos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonProductosMouseClicked
 
     private void BotonComprarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonComprarMouseClicked
-        // TODO add your handling code here:
+        
         InterfazCompra compra = new InterfazCompra();
         compra.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonComprarMouseClicked
+
+    private void BotonUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonUsuariosMouseClicked
+        
+        InterfazUsuarios usuarios = new InterfazUsuarios();
+        usuarios.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BotonUsuariosMouseClicked
+
+    private void BotonHistorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonHistorialMouseClicked
+        
+        InterfazHistorial historial = new InterfazHistorial();
+        historial.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BotonHistorialMouseClicked
 
     /**
      * @param args the command line arguments
