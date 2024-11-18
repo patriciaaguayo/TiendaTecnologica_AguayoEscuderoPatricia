@@ -1,11 +1,13 @@
 com/mycompany/tiendatecnologica/InterfazCompra.class
 com/mycompany/tiendatecnologica/InterfazProductos.class
 com/mycompany/tiendatecnologica/CrearBBDD.class
+com/mycompany/tiendatecnologica/LogicaUsuarios.class
 com/mycompany/tiendatecnologica/InterfazUsuarios.class
 com/mycompany/tiendatecnologica/TiendaTecnologica.class
 com/mycompany/tiendatecnologica/InterfazHistorial.class
 com/mycompany/tiendatecnologica/InterfazInicio$6.class
 com/mycompany/tiendatecnologica/InterfazCompra$1.class
+com/mycompany/tiendatecnologica/InterfazUsuarios$3.class
 com/mycompany/tiendatecnologica/InterfazInicio$8.class
 com/mycompany/tiendatecnologica/InterfazCompra$4.class
 com/mycompany/tiendatecnologica/InterfazHistorial$1.class
@@ -20,6 +22,7 @@ com/mycompany/tiendatecnologica/InterfazInicio.class
 com/mycompany/tiendatecnologica/InterfazInicio$2.class
 com/mycompany/tiendatecnologica/InterfazInicio$1.class
 com/mycompany/tiendatecnologica/InterfazInicio$7.class
+com/mycompany/tiendatecnologica/InterfazUsuarios$4.class
 com/mycompany/tiendatecnologica/InterfazCompra$3.class
 com/mycompany/tiendatecnologica/InterfazInicio$9.class
 com/mycompany/tiendatecnologica/InterfazInicio$4.class

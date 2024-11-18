@@ -19,6 +19,8 @@ public class InterfazUsuarios extends javax.swing.JFrame {
     public InterfazUsuarios() {
         initComponents();
     }
+    
+    LogicaUsuarios logica = new LogicaUsuarios();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,14 +37,15 @@ public class InterfazUsuarios extends javax.swing.JFrame {
         BotonVolverU = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        idUsuarioU = new javax.swing.JTextField();
         BotonBuscarU = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        NombreUsuario = new javax.swing.JTextField();
+        EmailUsuario = new javax.swing.JTextField();
+        DireccionUsuario = new javax.swing.JTextField();
+        BotonLimpiarU = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,13 +93,18 @@ public class InterfazUsuarios extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel2.setText("ID Usuario:");
 
-        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        idUsuarioU.setBackground(new java.awt.Color(204, 204, 204));
+        idUsuarioU.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
 
         BotonBuscarU.setBackground(new java.awt.Color(0, 0, 0));
         BotonBuscarU.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         BotonBuscarU.setForeground(new java.awt.Color(255, 255, 255));
         BotonBuscarU.setText("Buscar");
+        BotonBuscarU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonBuscarUActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel3.setText("Nombre:");
@@ -107,13 +115,24 @@ public class InterfazUsuarios extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel5.setText("Dirección:");
 
-        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
+        NombreUsuario.setBackground(new java.awt.Color(204, 204, 204));
+        NombreUsuario.setFont(new java.awt.Font("Helvetica Neue", 0, 20)); // NOI18N
 
-        jTextField3.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField3.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        EmailUsuario.setBackground(new java.awt.Color(204, 204, 204));
+        EmailUsuario.setFont(new java.awt.Font("Helvetica Neue", 0, 20)); // NOI18N
 
-        jTextField4.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField4.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        DireccionUsuario.setBackground(new java.awt.Color(204, 204, 204));
+        DireccionUsuario.setFont(new java.awt.Font("Helvetica Neue", 0, 20)); // NOI18N
+
+        BotonLimpiarU.setBackground(new java.awt.Color(0, 0, 0));
+        BotonLimpiarU.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        BotonLimpiarU.setForeground(new java.awt.Color(255, 255, 255));
+        BotonLimpiarU.setText("Limpiar");
+        BotonLimpiarU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonLimpiarUActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -130,7 +149,7 @@ public class InterfazUsuarios extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(50, 50, 50)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(idUsuarioU, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(15, 15, 15)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,15 +162,21 @@ public class InterfazUsuarios extends javax.swing.JFrame {
                         .addComponent(BotonVolverU, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(294, 294, 294)
                         .addComponent(jLabel1)
-                        .addGap(77, 77, 77)
-                        .addComponent(BotonBuscarU, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(77, 77, 77)
+                                .addComponent(BotonBuscarU, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BotonLimpiarU, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(62, 62, 62))))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EmailUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DireccionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(126, 126, 126))
         );
         jPanel1Layout.setVerticalGroup(
@@ -160,28 +185,30 @@ public class InterfazUsuarios extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(BotonVolverU, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(BotonLimpiarU, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonVolverU, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(72, 72, 72)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idUsuarioU, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BotonBuscarU, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(NombreUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EmailUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(DireccionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -215,6 +242,16 @@ public class InterfazUsuarios extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonVolverUMouseClicked
+
+    private void BotonBuscarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarUActionPerformed
+        
+        logica.BuscarAlumno(idUsuarioU, EmailUsuario, DireccionUsuario, NombreUsuario);
+    }//GEN-LAST:event_BotonBuscarUActionPerformed
+
+    private void BotonLimpiarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLimpiarUActionPerformed
+        
+        logica.limpiar(idUsuarioU, EmailUsuario, DireccionUsuario, NombreUsuario);
+    }//GEN-LAST:event_BotonLimpiarUActionPerformed
 
     /**
      * @param args the command line arguments
@@ -253,7 +290,12 @@ public class InterfazUsuarios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonBuscarU;
+    private javax.swing.JButton BotonLimpiarU;
     private javax.swing.JButton BotonVolverU;
+    private javax.swing.JTextField DireccionUsuario;
+    private javax.swing.JTextField EmailUsuario;
+    private javax.swing.JTextField NombreUsuario;
+    private javax.swing.JTextField idUsuarioU;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -262,9 +304,5 @@ public class InterfazUsuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }
