@@ -20,7 +20,7 @@ public class Conexion {
     private static String servidor = "127.0.0.1";
     private static String puertoIlerna = "3307";
     private static String puertoCasa = "3306";
-    private static String bbdd = "prueba";
+    private static String bbdd = "TiendaOnline";
     //private static String urlIlerna = "jdbc:mysql://" + servidor+ ":" +puertoIlerna + "/"+bbdd;
     private static String urlCasa = "jdbc:mysql://" + servidor+ ":" +puertoCasa + "/"+bbdd;
     

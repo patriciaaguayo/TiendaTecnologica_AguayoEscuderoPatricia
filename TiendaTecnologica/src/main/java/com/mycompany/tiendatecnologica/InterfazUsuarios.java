@@ -4,6 +4,9 @@
  */
 package com.mycompany.tiendatecnologica;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author patriciaaguayo
@@ -199,7 +202,16 @@ public class InterfazUsuarios extends javax.swing.JFrame {
 
     private void BotonVolverUMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonVolverUMouseClicked
         
-        InterfazInicio inicio = new InterfazInicio();
+        InterfazInicio inicio = null;
+        
+        try {
+            
+            inicio = new InterfazInicio();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(InterfazUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonVolverUMouseClicked

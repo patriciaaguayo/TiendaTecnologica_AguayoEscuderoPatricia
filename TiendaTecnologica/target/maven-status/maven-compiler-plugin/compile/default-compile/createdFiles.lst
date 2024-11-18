@@ -1,5 +1,6 @@
 com/mycompany/tiendatecnologica/InterfazCompra.class
 com/mycompany/tiendatecnologica/InterfazProductos.class
+com/mycompany/tiendatecnologica/CrearBBDD.class
 com/mycompany/tiendatecnologica/InterfazUsuarios.class
 com/mycompany/tiendatecnologica/TiendaTecnologica.class
 com/mycompany/tiendatecnologica/InterfazHistorial.class

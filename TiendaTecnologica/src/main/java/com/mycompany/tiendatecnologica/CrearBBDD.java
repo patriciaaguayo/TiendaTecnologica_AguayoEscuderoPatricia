@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 
 /**
  *
@@ -25,252 +27,391 @@ public class CrearBBDD {
         conexion = conex.getConnection();
     }
     
-    
-    public void crearBBDD() {
-        
+    public void insertarDatos() throws Exception {
+      
         try {
             
-            // Leer el archivo JSON
+            // Crear objeto Mapper para leer el JSON
             
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(new File("src/main/resources/basic.json"));        
+            ObjectMapper lector = new ObjectMapper();
+            JsonNode ruta = lector.readTree(new File("src/main/resources/InformacionTienda.json"));
 
-            // Crear tablas si no existen
+            // Inserción de la tienda
             
-                String createUsersTable = """
-                    CREATE TABLE IF NOT EXISTS usuarios (
-                        idUsuario INT PRIMARY KEY,
-                        nombreUsuario VARCHAR(100),
-                        email VARCHAR(100)
-                    );
-                """;
-                conexion.createStatement().execute(createUsersTable);
-            
+            JsonNode tienda = ruta.get("tienda");
+            insertarTienda(tienda);
 
+            // Inserción de las categorías y productos
             
-                String createProductsTable = """
-                    CREATE TABLE IF NOT EXISTS productos (
-                        idProducto INT PRIMARY KEY,
-                        nombreProducto VARCHAR(100),
-                        cate VARCHAR(50),
-                        price DECIMAL(10, 2)
-                    );
-                """;
-                conexion.createStatement().execute(createProductsTable);
+            JsonNode categorias = tienda.get("categorias");
             
+            if (categorias != null && categorias.isArray()) {
+                insertarCategorias(categorias);
+                
+            } else {
+                System.err.println("\n No se encontraron categorías en el archivo JSON.");
+            }
 
-                String createOrdersTable = """
-                    CREATE TABLE IF NOT EXISTS historial (
-                        orderId INT PRIMARY KEY,
-                        userId INT,
-                        totalPrice DECIMAL(10, 2),
-                        orderDate DATE,
-                        FOREIGN KEY (userId) REFERENCES users(id)
-                    );
-                """;
-                conexion.createStatement().execute(createOrdersTable);
+            // Inserción de usuarios y sus direcciones y historial de compras
             
-
-                String createOrderProductsTable = """
-                    CREATE TABLE IF NOT EXISTS order_products (
-                        orderId INT,
-                        productId INT,
-                        quantity INT,
-                        PRIMARY KEY (orderId, productId),
-                        FOREIGN KEY (orderId) REFERENCES orders(orderId),
-                        FOREIGN KEY (productId) REFERENCES products(id)
-                    );
-                """;
-                conexion.createStatement().execute(createOrderProductsTable);
+            JsonNode usuarios = tienda.get("usuarios");
             
+            for (JsonNode usuario : usuarios) {
+                
+                // Inserción del usuario
+                
+                insertarUsuario(usuario);
 
-            // Insertar datos en la base de datos
+                // Inserción de la dirección del usuario
+                
+                insertarDireccion(usuario.get("direccion"), usuario.get("id").asInt());
+
+                // Inserción del historial de compras
+                
+                JsonNode historialComprasNode = usuario.get("historialCompras");
+                int idUsuario = usuario.get("id").asInt();
+                insertarHistorialCompras(historialComprasNode, idUsuario);
+            }
             
-            insertarDatos(rootNode, conexion);
-
-            System.out.println("\n Datos importados correctamente.");
-            conexion.close();
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     
-    private void insertarDatos(JsonNode rootNode, Connection connection) throws Exception {
+    // Método para insertar los datos de la tabla tienda
+
+    public void insertarTienda(JsonNode tiendaNode) throws SQLException {
         
-        // Insertar datos en la tabla de usuarios
+        String nombreTienda = tiendaNode.get("nombre").asText();
+
+        String checkTiendaQuery = "SELECT COUNT(*) FROM tienda WHERE nombreTienda = ?";
+        PreparedStatement checkTiendaStatement = conexion.prepareStatement(checkTiendaQuery);
+        checkTiendaStatement.setString(1, nombreTienda);
+        ResultSet resultSet = checkTiendaStatement.executeQuery();
+        resultSet.next();
+
+        if (resultSet.getInt(1) > 0) {
+            System.out.println("\n La tienda '" + nombreTienda + "' ya está registrada.");
+            return;
+        }
+
+        String insertTiendaQuery = "INSERT INTO tienda (nombreTienda) VALUES (?)";
+        PreparedStatement insertTiendaStatement = conexion.prepareStatement(insertTiendaQuery);
+        insertTiendaStatement.setString(1, nombreTienda);
+        insertTiendaStatement.executeUpdate();
+        System.out.println("\n La tienda '" + nombreTienda + "' insertada correctamente.");
+    }
     
-        JsonNode usersNode = rootNode.get("users");
+    // Método para insertar los datos de la tabla categorias
+    
+    public void insertarCategorias(JsonNode categoriasNode) throws SQLException {
         
-        if (usersNode.isArray()) {
-            String insertUserQuery = "INSERT INTO users (id, name, email, isActive) VALUES (?, ?, ?, ?)";
-            String checkUserExistsQuery = "SELECT COUNT(*) FROM users WHERE id = ?";
-            PreparedStatement userStatement = connection.prepareStatement(insertUserQuery);
-            PreparedStatement checkUserStatement = connection.prepareStatement(checkUserExistsQuery);
-
-            for (JsonNode user : usersNode) {
-                
-                int userId = user.get("id").asInt();
-                checkUserStatement.setInt(1, userId);
-                ResultSet rs = checkUserStatement.executeQuery();
-                
-                if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.printf("Usuario con ID %d ya existe. Se omite la inserción.%n", userId);
-                    continue; // Saltar al siguiente usuario
-                }
-
-                userStatement.setInt(1, userId);
-                userStatement.setString(2, user.get("name").asText());
-                userStatement.setString(3, user.get("email").asText());
-                userStatement.setBoolean(4, user.get("isActive").asBoolean());
-                userStatement.executeUpdate();
-            }
+        if (categoriasNode == null || !categoriasNode.isArray()) {
+            System.err.println("\n El nodo de categorías no es válido o está vacío.");
+            return;
         }
 
-        // Insertar datos en la tabla de productos
-        
-        JsonNode productsNode = rootNode.get("products");
-        
-        if (productsNode.isArray()) {
-            
-            String insertProductQuery = "INSERT INTO products (id, name, category, price) VALUES (?, ?, ?, ?)";
-            String checkProductExistsQuery = "SELECT COUNT(*) FROM products WHERE id = ?";
-            PreparedStatement productStatement = connection.prepareStatement(insertProductQuery);
-            PreparedStatement checkProductStatement = connection.prepareStatement(checkProductExistsQuery);
+        for (JsonNode categoria : categoriasNode) {
+            JsonNode idNode = categoria.get("id");
+            JsonNode nombreNode = categoria.get("nombre");
 
-            for (JsonNode product : productsNode) {
-                
-                int productId = product.get("id").asInt();
-                checkProductStatement.setInt(1, productId);
-                ResultSet rs = checkProductStatement.executeQuery();
-                
-                if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.printf("Producto con ID %d ya existe. Se omite la inserción.%n", productId);
-                    continue; // Saltar al siguiente producto
-                }
-
-                productStatement.setInt(1, productId);
-                productStatement.setString(2, product.get("name").asText());
-                productStatement.setString(3, product.get("category").asText());
-                productStatement.setDouble(4, product.get("price").asDouble());
-                productStatement.executeUpdate();
+            if (idNode == null || idNode.isNull()) {
+                System.err.println("\n Una categoría no tiene un 'id' válido.");
+                continue;
             }
-        }
 
-        // Insertar datos en la tabla de órdenes y productos asociados
-        
-        JsonNode ordersNode = rootNode.get("orders");
-        
-        if (ordersNode.isArray()) {
+            if (nombreNode == null || nombreNode.isNull()) {
+                System.err.println("\n La categoría con ID " + idNode.asInt() + " no tiene un 'nombre' válido.");
+                continue;
+            }
+
+            int idCategoria = idNode.asInt();
+            String nombreCategoria = nombreNode.asText();
+
+            // Verifica si la categoría ya existe
             
-            String insertOrderQuery = "INSERT INTO orders (orderId, userId, totalPrice, orderDate) VALUES (?, ?, ?, ?)";
-            String checkOrderExistsQuery = "SELECT COUNT(*) FROM orders WHERE orderId = ?";
-            String insertOrderProductQuery = "INSERT INTO order_products (orderId, productId, quantity) VALUES (?, ?, ?)";
-            String checkOrderProductExistsQuery = "SELECT COUNT(*) FROM order_products WHERE orderId = ? AND productId = ?";
+            String checkCategoriaQuery = "SELECT COUNT(*) FROM categorias WHERE idCategoria = ?";
+            PreparedStatement checkCategoriaStatement = conexion.prepareStatement(checkCategoriaQuery);
+            checkCategoriaStatement.setInt(1, idCategoria);
+            ResultSet resultSet = checkCategoriaStatement.executeQuery();
+            resultSet.next();
 
-            PreparedStatement orderStatement = connection.prepareStatement(insertOrderQuery);
-            PreparedStatement checkOrderStatement = connection.prepareStatement(checkOrderExistsQuery);
-            PreparedStatement orderProductStatement = connection.prepareStatement(insertOrderProductQuery);
-            PreparedStatement checkOrderProductStatement = connection.prepareStatement(checkOrderProductExistsQuery);
-
-            for (JsonNode order : ordersNode) {
+            if (resultSet.getInt(1) > 0) {
+                System.out.println("\n La categoría '" + nombreCategoria + "' ya está registrada.");
                 
-                int orderId = order.get("orderId").asInt();
-                checkOrderStatement.setInt(1, orderId);
-                ResultSet rs = checkOrderStatement.executeQuery();
+            } else {
                 
-                if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.printf("Orden con ID %d ya existe. Se omite la inserción.%n", orderId);
-                    continue; // Saltar a la siguiente orden
-                }
-
-                orderStatement.setInt(1, orderId);
-                orderStatement.setInt(2, order.get("userId").asInt());
-                orderStatement.setDouble(3, order.get("totalPrice").asDouble());
-                orderStatement.setDate(4, java.sql.Date.valueOf(order.get("orderDate").asText()));
-                orderStatement.executeUpdate();
-
-                JsonNode productsInOrder = order.get("products");
+                // Insertar categoría
                 
-                for (JsonNode product : productsInOrder) {
-                    
-                    int productId = product.get("productId").asInt();
-                    checkOrderProductStatement.setInt(1, orderId);
-                    checkOrderProductStatement.setInt(2, productId);
-                    rs = checkOrderProductStatement.executeQuery();
-                    
-                    if (rs.next() && rs.getInt(1) > 0) {
-                        System.out.printf("Producto con ID %d ya está asociado a la orden %d. Se omite la inserción.%n", productId, orderId);
-                        continue; // Saltar al siguiente producto en la orden
-                    }
+                String insertCategoriaQuery = "INSERT INTO categorias (idCategoria, nombreCategoria) VALUES (?, ?)";
+                PreparedStatement insertCategoriaStatement = conexion.prepareStatement(insertCategoriaQuery);
+                insertCategoriaStatement.setInt(1, idCategoria);
+                insertCategoriaStatement.setString(2, nombreCategoria);
+                insertCategoriaStatement.executeUpdate();
+                System.out.println("\n Categoría '" + nombreCategoria + "' insertada correctamente.");
+            }
 
-                    orderProductStatement.setInt(1, orderId);
-                    orderProductStatement.setInt(2, productId);
-                    orderProductStatement.setInt(3, product.get("quantity").asInt());
-                    orderProductStatement.executeUpdate();
-                }
+            // Insertar productos de la categoría
+            
+            JsonNode productosNode = categoria.get("productos");
+            
+            if (productosNode != null && productosNode.isArray()) {
+                insertarProductos(productosNode, idCategoria);
+                
+            } else {
+                System.err.println("\n La categoría '" + nombreCategoria + "' no tiene productos.");
             }
         }
     }
     
-    public static void mostrarBBDD() {
-        String url = "jdbc:mysql://127.0.0.1:3306/PruebaBBDDJson"; // Cambia "MiBaseDeDatos" por el nombre de tu base
-        String username = "root"; // Cambia "root" si tienes otro usuario
-        String password = ""; // Cambia "tu_contraseña" por tu contraseña
+    // Método para insertar los datos de los profuctos en la tabla productos
+    
+    public void insertarProductos(JsonNode productosNode, int idCategoria) throws SQLException {
+        
+        for (JsonNode producto : productosNode) {
+            int productoId = producto.get("id").asInt();
+            String nombreProducto = producto.get("nombre").asText();
 
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-             Statement statement = connection.createStatement()) {
+            // Verifica si el producto ya existe en la base de datos
+            
+            String checkProductoQuery = "SELECT COUNT(*) FROM productos WHERE idProducto = ?";
+            PreparedStatement checkProductoStatement = conexion.prepareStatement(checkProductoQuery);
+            checkProductoStatement.setInt(1, productoId);
+            ResultSet resultSet = checkProductoStatement.executeQuery();
+            resultSet.next();
 
-            // Mostrar información de la tabla "users"
-            System.out.println("Tabla: users");
-            ResultSet usersResult = statement.executeQuery("SELECT * FROM users");
-            while (usersResult.next()) {
-                int id = usersResult.getInt("id");
-                String name = usersResult.getString("name");
-                String email = usersResult.getString("email");
-                boolean isActive = usersResult.getBoolean("isActive");
-                System.out.printf("ID: %d, Name: %s, Email: %s, Active: %b%n", id, name, email, isActive);
-            }
-            System.out.println();
-
-            // Mostrar información de la tabla "products"
-            System.out.println("Tabla: products");
-            ResultSet productsResult = statement.executeQuery("SELECT * FROM products");
-            while (productsResult.next()) {
-                int id = productsResult.getInt("id");
-                String name = productsResult.getString("name");
-                String category = productsResult.getString("category");
-                double price = productsResult.getDouble("price");
-                System.out.printf("ID: %d, Name: %s, Category: %s, Price: %.2f%n", id, name, category, price);
-            }
-            System.out.println();
-
-            // Mostrar información de la tabla "orders"
-            System.out.println("Tabla: orders");
-            ResultSet ordersResult = statement.executeQuery("SELECT * FROM orders");
-            while (ordersResult.next()) {
-                int orderId = ordersResult.getInt("orderId");
-                int userId = ordersResult.getInt("userId");
-                double totalPrice = ordersResult.getDouble("totalPrice");
-                String orderDate = ordersResult.getDate("orderDate").toString();
-                System.out.printf("Order ID: %d, User ID: %d, Total Price: %.2f, Order Date: %s%n",
-                        orderId, userId, totalPrice, orderDate);
-            }
-            System.out.println();
-
-            // Mostrar información de la tabla "order_products"
-            System.out.println("Tabla: order_products");
-            ResultSet orderProductsResult = statement.executeQuery("SELECT * FROM order_products");
-            while (orderProductsResult.next()) {
-                int orderId = orderProductsResult.getInt("orderId");
-                int productId = orderProductsResult.getInt("productId");
-                int quantity = orderProductsResult.getInt("quantity");
-                System.out.printf("Order ID: %d, Product ID: %d, Quantity: %d%n",
-                        orderId, productId, quantity);
+            if (resultSet.getInt(1) > 0) {
+                System.out.println("\n El producto con ID " + productoId + " ya está registrado.");
+                continue;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            // Hacer string de características separado por comas
+            
+            StringBuilder caracteristicasBuilder = new StringBuilder();
+            JsonNode caracteristicasNode = producto.get("caracteristicas");
+            
+            if (caracteristicasNode != null) {
+                caracteristicasNode.fieldNames().forEachRemaining(key -> { // Uso del lamda para ahorrar código
+                    String valor = caracteristicasNode.get(key).asText();
+                    caracteristicasBuilder.append(key).append(": ").append(valor).append(", ");
+                });
+            }
+            
+            // Elimina la última coma y espacio
+            
+            String caracteristicas = caracteristicasBuilder.toString().replaceAll(", $", "");
+
+            // Insertar un producto en la base de datos
+            
+            String insertProductoQuery = "INSERT INTO productos (idProducto, nombreProducto, precio, descripcion, caracteristicas, inventario, idCategoria) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement insertProductoStatement = conexion.prepareStatement(insertProductoQuery);
+            insertProductoStatement.setInt(1, productoId);
+            insertProductoStatement.setString(2, nombreProducto);
+            insertProductoStatement.setDouble(3, producto.get("precio").asDouble());
+            insertProductoStatement.setString(4, producto.get("descripcion").asText());
+            insertProductoStatement.setString(5, caracteristicas); // Características como string
+            insertProductoStatement.setInt(6, producto.get("inventario").asInt());
+            insertProductoStatement.setInt(7, idCategoria); // Usar idCategoria correcto
+            insertProductoStatement.executeUpdate();
+            System.out.println("\n El producto '" + nombreProducto + "' insertado correctamente.");
+
+            // Insertar imágenes de los productos
+            
+            insertarImagenesProducto(producto.get("imagenes"), productoId);
+        }
+    }
+    
+    // Método para insertar los datos de la imágenes de los productos
+    
+    public void insertarImagenesProducto(JsonNode imagenesNode, int productoId) throws SQLException {
+        
+        for (JsonNode imagen : imagenesNode) {
+            String imagenUrl = imagen.asText();
+
+            String checkImagenQuery = "SELECT COUNT(*) FROM imagenesProducto WHERE imagenUrl = ? AND idProducto = ?"; // Verifica si la foto ya existe
+            PreparedStatement checkImagenStatement = conexion.prepareStatement(checkImagenQuery);
+            checkImagenStatement.setString(1, imagenUrl);
+            checkImagenStatement.setInt(2, productoId);
+            ResultSet resultSet = checkImagenStatement.executeQuery();
+            resultSet.next();
+
+            if (resultSet.getInt(1) > 0) {
+                System.out.println("\n La imagen '" + imagenUrl + "' ya está registrada para el producto con ID " + productoId);
+                continue;
+            }
+
+            String insertImagenQuery = "INSERT INTO imagenesProducto (idProducto, imagenUrl) VALUES (?, ?)";
+            PreparedStatement insertImagenStatement = conexion.prepareStatement(insertImagenQuery);
+            insertImagenStatement.setInt(1, productoId);
+            insertImagenStatement.setString(2, imagenUrl);
+            insertImagenStatement.executeUpdate();
+            System.out.println("\n La imagen '" + imagenUrl + "' insertada correctamente para el producto con ID " + productoId);
+        }
+    }
+    
+    // Método para insertar los datos de los usuarios
+    
+    public void insertarUsuario(JsonNode usuarioNode) throws SQLException {
+        
+        int idUsuario = usuarioNode.get("id").asInt();
+
+        String checkUsuarioQuery = "SELECT COUNT(*) FROM usuarios WHERE idUsuario = ?"; // Verifica si ese usuario ya existe
+        PreparedStatement checkUsuarioStatement = conexion.prepareStatement(checkUsuarioQuery);
+        checkUsuarioStatement.setInt(1, idUsuario);
+        ResultSet resultSet = checkUsuarioStatement.executeQuery();
+        resultSet.next();
+
+        if (resultSet.getInt(1) > 0) {
+            System.out.println("\n El usuario con id '" + idUsuario + "' ya está registrado.");
+            return;
+        }
+
+        String insertUsuarioQuery = "INSERT INTO usuarios (idUsuario, nombreUsuario, email) VALUES (?, ?, ?)";
+        PreparedStatement insertUsuarioStatement = conexion.prepareStatement(insertUsuarioQuery);
+        insertUsuarioStatement.setInt(1, idUsuario);
+        insertUsuarioStatement.setString(2, usuarioNode.get("nombre").asText());
+        insertUsuarioStatement.setString(3, usuarioNode.get("email").asText());
+        insertUsuarioStatement.executeUpdate();
+        System.out.println("\n El usuario '" + usuarioNode.get("nombre").asText() + "' insertado correctamente.");
+    }
+    
+    // Método para insertar los datos en la tabla direcciones
+    
+    public void insertarDireccion(JsonNode direccionNode, int usuarioId) throws SQLException {
+        
+        String checkDireccionQuery = "SELECT COUNT(*) FROM direcciones WHERE idUsuario = ?";
+        PreparedStatement checkDireccionStatement = conexion.prepareStatement(checkDireccionQuery); // Verifica si un usuario ya tiene una dirección apuntada
+        checkDireccionStatement.setInt(1, usuarioId);
+        ResultSet resultSet = checkDireccionStatement.executeQuery();
+        resultSet.next();
+
+        if (resultSet.getInt(1) > 0) {
+            System.out.println("\n La dirección para el usuario con ID " + usuarioId + " ya está registrada.");
+            return;
+        }
+
+        String insertDireccionQuery = "INSERT INTO direcciones (idUsuario, calle, numero, ciudad, pais) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement insertDireccionStatement = conexion.prepareStatement(insertDireccionQuery);
+        insertDireccionStatement.setInt(1, usuarioId);
+        insertDireccionStatement.setString(2, direccionNode.get("calle").asText());
+        insertDireccionStatement.setInt(3, direccionNode.get("numero").asInt());
+        insertDireccionStatement.setString(4, direccionNode.get("ciudad").asText());
+        insertDireccionStatement.setString(5, direccionNode.get("pais").asText());
+        insertDireccionStatement.executeUpdate();
+        System.out.println("\n La dirección insertada correctamente para el usuario con ID " + usuarioId);
+    }
+    
+    // Método para insertar los datos del historial de compras
+    
+    public void insertarHistorialCompras(JsonNode historialComprasNode, int idUsuario) throws SQLException {
+        
+        for (JsonNode compra : historialComprasNode) {
+            int idProducto = compra.get("productoId").asInt();
+            int cantidad = compra.get("cantidad").asInt();
+            String fecha = compra.get("fecha").asText();
+
+            // Verificación de la compra para valores nulos o inválidos
+            
+            if (idProducto == 0 || cantidad == 0 || fecha == null || fecha.isEmpty()) {
+                System.out.println("\n Compra no válida en el historial de compras del usuario con ID " + idUsuario);
+                continue;
+            }
+
+            // Inserción del historial de compras en la base de datos
+            
+            String insertHistorialQuery = "INSERT INTO historialCompras (idUsuario, idProducto, cantidad, fecha) VALUES (?, ?, ?, ?)";
+            PreparedStatement insertHistorialStatement = conexion.prepareStatement(insertHistorialQuery);
+            insertHistorialStatement.setInt(1, idUsuario);  
+            insertHistorialStatement.setInt(2, idProducto);  
+            insertHistorialStatement.setInt(3, cantidad);   
+            insertHistorialStatement.setString(4, fecha);
+            insertHistorialStatement.executeUpdate();
+
+            System.out.println("\n Compra registrada para el usuario con ID " + idUsuario + " en el historial.");
+        }
+    }
+    
+    // Método para ver que los datos del json se han guardado correctamente en la BBDD
+    
+    public void mostrarBBDD() throws SQLException{
+        
+
+        // Consultar y mostrar los datos de la tabla tienda
+        
+        String consultaTienda = "SELECT * FROM tienda";
+        PreparedStatement tiendaStatement = conexion.prepareStatement(consultaTienda);
+        ResultSet tiendaResultSet = tiendaStatement.executeQuery();
+        System.out.println("\n Tiendas:");
+        while (tiendaResultSet.next()) {
+            System.out.println(" ID Tienda: " + tiendaResultSet.getInt("idTienda") + ", Nombre: " + tiendaResultSet.getString("nombreTienda"));
+        }
+
+        // Consultar y mostrar los datos de la tabla categorias
+        
+        String consultaCategorias = "SELECT * FROM categorias";
+        PreparedStatement categoriasStatement = conexion.prepareStatement(consultaCategorias);
+        ResultSet categoriasResultSet = categoriasStatement.executeQuery();
+        System.out.println("\n Categorías:");
+        while (categoriasResultSet.next()) {
+            System.out.println(" ID Categoría: " + categoriasResultSet.getInt("idCategoria") + ", Nombre: " + categoriasResultSet.getString("nombreCategoria"));
+        }
+
+        // Consultar y mostrar los datos de la tabla productos
+        
+        String consultaProductos = "SELECT * FROM productos";
+        PreparedStatement productosStatement = conexion.prepareStatement(consultaProductos);
+        ResultSet productosResultSet = productosStatement.executeQuery();
+        System.out.println("\n Productos:");
+        while (productosResultSet.next()) {
+            System.out.println(" ID Producto: " + productosResultSet.getInt("idProducto") + ", Nombre: " + productosResultSet.getString("nombreProducto") + 
+                               ", Precio: " + productosResultSet.getDouble("precio") + ", Descripción: " + productosResultSet.getString("descripcion") +
+                               ", Características: " + productosResultSet.getString("caracteristicas") + ", Inventario: " + productosResultSet.getInt("inventario"));
+        }
+
+        // Consultar y mostrar los datos de la tabla imagenesProducto
+        
+        String consultaImagenesProducto = "SELECT * FROM imagenesProducto";
+        PreparedStatement imagenesProductoStatement = conexion.prepareStatement(consultaImagenesProducto);
+        ResultSet imagenesProductoResultSet = imagenesProductoStatement.executeQuery();
+        System.out.println("\n Imágenes de Productos:");
+        while (imagenesProductoResultSet.next()) {
+            System.out.println(" ID Imagen: " + imagenesProductoResultSet.getInt("idImagen") + ", ID Producto: " + imagenesProductoResultSet.getInt("idProducto") +
+                               ", URL Imagen: " + imagenesProductoResultSet.getString("imagenUrl"));
+        }
+
+        // Consultar y mostrar los datos de la tabla usuarios
+        
+        String consultaUsuarios = "SELECT * FROM usuarios";
+        PreparedStatement usuariosStatement = conexion.prepareStatement(consultaUsuarios);
+        ResultSet usuariosResultSet = usuariosStatement.executeQuery();
+        System.out.println("\n Usuarios:");
+        while (usuariosResultSet.next()) {
+            System.out.println(" ID Usuario: " + usuariosResultSet.getInt("idUsuario") + ", Nombre: " + usuariosResultSet.getString("nombreUsuario") + 
+                               ", Email: " + usuariosResultSet.getString("email"));
+        }
+
+        // Consultar y mostrar los datos de la tabla direcciones
+        
+        String consultaDirecciones = "SELECT * FROM direcciones";
+        PreparedStatement direccionesStatement = conexion.prepareStatement(consultaDirecciones);
+        ResultSet direccionesResultSet = direccionesStatement.executeQuery();
+        System.out.println("\n Direcciones:");
+        while (direccionesResultSet.next()) {
+            System.out.println(" ID Dirección: " + direccionesResultSet.getInt("idDireccion") + ", ID Usuario: " + direccionesResultSet.getInt("idUsuario") + 
+                               ", Calle: " + direccionesResultSet.getString("calle") + ", Número: " + direccionesResultSet.getInt("numero") + 
+                               ", Ciudad: " + direccionesResultSet.getString("ciudad") + ", País: " + direccionesResultSet.getString("pais"));
+        }
+
+        // Consultar y mostrar los datos de la tabla historialCompras
+        
+        String consultaHistorialCompras = "SELECT * FROM historialCompras";
+        PreparedStatement historialComprasStatement = conexion.prepareStatement(consultaHistorialCompras);
+        ResultSet historialComprasResultSet = historialComprasStatement.executeQuery();
+        System.out.println("\n Historial de Compras:");
+        while (historialComprasResultSet.next()) {
+            System.out.println(" ID Historial: " + historialComprasResultSet.getInt("idHistorial") + ", ID Usuario: " + historialComprasResultSet.getInt("idUsuario") + 
+                               ", ID Producto: " + historialComprasResultSet.getInt("idProducto") + ", Cantidad: " + historialComprasResultSet.getInt("cantidad") + 
+                               ", Fecha: " + historialComprasResultSet.getDate("fecha"));
         }
     }
 }

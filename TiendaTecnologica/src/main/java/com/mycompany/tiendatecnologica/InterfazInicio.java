@@ -4,6 +4,10 @@
  */
 package com.mycompany.tiendatecnologica;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author patriciaaguayo
@@ -16,9 +20,13 @@ public class InterfazInicio extends javax.swing.JFrame {
     
     Conexion conex = new Conexion();
     
-    public InterfazInicio() {
+    
+    public InterfazInicio() throws SQLException, Exception {
         initComponents();
         conex.getConnection();
+        CrearBBDD bbdd = new CrearBBDD(conex);
+        bbdd.insertarDatos();
+        bbdd.mostrarBBDD();
     }
 
     /**
@@ -267,7 +275,11 @@ public class InterfazInicio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazInicio().setVisible(true);
+                try {
+                    new InterfazInicio().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(InterfazInicio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

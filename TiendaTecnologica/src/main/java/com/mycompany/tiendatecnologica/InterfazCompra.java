@@ -4,6 +4,9 @@
  */
 package com.mycompany.tiendatecnologica;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author patriciaaguayo
@@ -193,8 +196,17 @@ public class InterfazCompra extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonVolverCActionPerformed
 
     private void BotonVolverCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonVolverCMouseClicked
-        // TODO add your handling code here:
-        InterfazInicio inicio = new InterfazInicio();
+        
+        InterfazInicio inicio = null;
+        
+        try {
+            
+            inicio = new InterfazInicio();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(InterfazCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonVolverCMouseClicked
