@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -364,7 +365,120 @@ public class LogicaUsuarios {
         Cantidad.setText("");
 
     }
+    
+    // Método para buscar las compras realizadas en la interfaz de Historial
+    
+    public void BuscarUsuarioHistorial(javax.swing.JTextField idUsuarioH, javax.swing.JTextArea Historial) {
+    
+        if(idUsuarioH.getText().isBlank()){
+            
+            JOptionPane.showMessageDialog(null, "Debes ingresar un id para buscar el historial de un usuario");
+            
+        }else{
+           
+            guardarCodigosUsuarios();
 
+            String codigoIngresado = idUsuarioH.getText().trim(); 
+            
+            
+            int idIngresado;
+            
+            try {
+                idIngresado = Integer.parseInt(codigoIngresado);
+                
+            } catch (NumberFormatException e) {
+                
+                JOptionPane.showMessageDialog(null, "Id debe contener solo números");
+                idUsuarioH.setText(""); 
+                return; 
+            }
+
+            boolean encontrado = comprobarCodigoUsuario(codigoIngresado); 
+
+            if (encontrado) {
+                buscarHistorial(idIngresado, idUsuarioH, Historial); 
+                guardarCodigosUsuarios(); 
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Id " + codigoIngresado + " no encontrado");
+                idUsuarioH.setText("");  
+            } 
+        }    
+        
+    }
+
+    public void buscarHistorial(int codigoUsuario, javax.swing.JTextField idUsuarioH, javax.swing.JTextArea Historial) {
+
+        String consulta = "SELECT usuarios.idUsuario, historialCompras.idHistorial, \n" +
+                          "historialCompras.idProducto, historialCompras.cantidad, \n" +
+                          "historialCompras.fecha FROM usuarios\n" +
+                          "JOIN historialCompras ON usuarios.idUsuario = historialCompras.idUsuario\n" +
+                          "WHERE usuarios.idUsuario = ?";
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+
+            ps = conexion.prepareStatement(consulta);
+            ps.setInt(1, codigoUsuario); 
+
+            rs = ps.executeQuery();
+
+            Historial.setText(""); 
+
+            boolean tieneHistorial = false;
+
+            while (rs.next()) {
+
+                int idU = rs.getInt("idUsuario");
+                int idH = rs.getInt("idHistorial");
+                int idP = rs.getInt("idProducto");
+                int cantidad = rs.getInt("cantidad");
+                Date fecha = rs.getDate("fecha");
+
+                
+                SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+                String fechaH = formato.format(fecha);
+
+                
+                String historial = "\n ID Historial: " + idH + ",  ID Producto: " + idP + 
+                                   ",  Cantidad: " + cantidad + ",  Fecha: " + fechaH + "\n";
+
+                Historial.append(historial);
+
+                tieneHistorial = true;
+            }
+
+            if (!tieneHistorial) {
+                JOptionPane.showMessageDialog(null, "No se encontró el historial de compras para el usuario con id: " + codigoUsuario);
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta");
+
+        } finally {
+            try {
+
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    // Método para limpiar los campos de la interfaz compras
+    
+    public void limpiarHistorial(javax.swing.JTextField idUsuarioH, javax.swing.JTextArea Historial){
+        
+        idUsuarioH.setText("");
+        Historial.setText("");
+
+    }
     
 }
 
