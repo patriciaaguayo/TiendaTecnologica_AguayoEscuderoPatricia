@@ -33,6 +33,7 @@ public class InterfazCompra extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        Logo = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         BotonVolverC = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -51,15 +52,23 @@ public class InterfazCompra extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
 
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/LogoTienda3.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(379, 379, 379)
+                .addComponent(Logo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 159, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(Logo)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 0));
@@ -278,6 +287,7 @@ public class InterfazCompra extends javax.swing.JFrame {
     private javax.swing.JTextField Cantidad;
     private javax.swing.JTextField IdProductoC;
     private javax.swing.JButton LimpiarC;
+    private javax.swing.JLabel Logo;
     private javax.swing.JTextField idUsuarioC;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
