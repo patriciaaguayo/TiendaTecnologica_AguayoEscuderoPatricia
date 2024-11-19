@@ -245,12 +245,12 @@ public class InterfazUsuarios extends javax.swing.JFrame {
 
     private void BotonBuscarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarUActionPerformed
         
-        logica.BuscarAlumno(idUsuarioU, EmailUsuario, DireccionUsuario, NombreUsuario);
+        logica.BuscarUsuario(idUsuarioU, EmailUsuario, DireccionUsuario, NombreUsuario);
     }//GEN-LAST:event_BotonBuscarUActionPerformed
 
     private void BotonLimpiarUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLimpiarUActionPerformed
         
-        logica.limpiar(idUsuarioU, EmailUsuario, DireccionUsuario, NombreUsuario);
+        logica.limpiarUsuarios(idUsuarioU, EmailUsuario, DireccionUsuario, NombreUsuario);
     }//GEN-LAST:event_BotonLimpiarUActionPerformed
 
     /**

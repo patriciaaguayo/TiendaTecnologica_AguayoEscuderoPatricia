@@ -304,16 +304,33 @@ public class CrearBBDD {
     // Método para insertar los datos del historial de compras
     
     public void insertarHistorialCompras(JsonNode historialComprasNode, int idUsuario) throws SQLException {
-        
+
         for (JsonNode compra : historialComprasNode) {
             int idProducto = compra.get("productoId").asInt();
             int cantidad = compra.get("cantidad").asInt();
             String fecha = compra.get("fecha").asText();
 
-            // Verificación de la compra para valores nulos o inválidos
+            // Verificación de la compra para valores nulos o vacíos
             
             if (idProducto == 0 || cantidad == 0 || fecha == null || fecha.isEmpty()) {
                 System.out.println("\n Compra no válida en el historial de compras del usuario con ID " + idUsuario);
+                continue;
+            }
+
+            // Comprobar si la compra ya existe en la base de datos
+            
+            String checkCompraQuery = "SELECT COUNT(*) FROM historialCompras WHERE idUsuario = ? AND idProducto = ? AND cantidad = ? AND fecha = ?";
+            PreparedStatement checkCompraStatement = conexion.prepareStatement(checkCompraQuery);
+            checkCompraStatement.setInt(1, idUsuario);
+            checkCompraStatement.setInt(2, idProducto);
+            checkCompraStatement.setInt(3, cantidad);
+            checkCompraStatement.setString(4, fecha);
+            ResultSet resultSet = checkCompraStatement.executeQuery();
+            resultSet.next();
+
+            if (resultSet.getInt(1) > 0) {
+                System.out.println("\n La compra con ID de producto " + idProducto + ", cantidad " + cantidad + " y fecha " + fecha +
+                        " ya está registrada para el usuario con ID " + idUsuario);
                 continue;
             }
 

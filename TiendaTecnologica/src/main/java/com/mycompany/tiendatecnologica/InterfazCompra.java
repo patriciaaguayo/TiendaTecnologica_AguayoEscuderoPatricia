@@ -19,6 +19,8 @@ public class InterfazCompra extends javax.swing.JFrame {
     public InterfazCompra() {
         initComponents();
     }
+    
+    LogicaUsuarios logica = new LogicaUsuarios();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,12 +37,13 @@ public class InterfazCompra extends javax.swing.JFrame {
         BotonVolverC = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        IdUsuarioC = new javax.swing.JTextField();
+        idUsuarioC = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         IdProductoC = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         Cantidad = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        BotonComprar = new javax.swing.JButton();
+        LimpiarC = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,8 +96,8 @@ public class InterfazCompra extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel2.setText("ID Usuario:");
 
-        IdUsuarioC.setBackground(new java.awt.Color(204, 204, 204));
-        IdUsuarioC.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        idUsuarioC.setBackground(new java.awt.Color(204, 204, 204));
+        idUsuarioC.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel3.setText("ID Producto:");
@@ -108,13 +111,23 @@ public class InterfazCompra extends javax.swing.JFrame {
         Cantidad.setBackground(new java.awt.Color(204, 204, 204));
         Cantidad.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setFont(new java.awt.Font("Helvetica Neue", 0, 30)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Comprar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BotonComprar.setBackground(new java.awt.Color(0, 0, 0));
+        BotonComprar.setFont(new java.awt.Font("Helvetica Neue", 0, 30)); // NOI18N
+        BotonComprar.setForeground(new java.awt.Color(255, 255, 255));
+        BotonComprar.setText("Comprar");
+        BotonComprar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BotonComprarActionPerformed(evt);
+            }
+        });
+
+        LimpiarC.setBackground(new java.awt.Color(0, 0, 0));
+        LimpiarC.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        LimpiarC.setForeground(new java.awt.Color(255, 255, 255));
+        LimpiarC.setText("Limpiar");
+        LimpiarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LimpiarCActionPerformed(evt);
             }
         });
 
@@ -123,30 +136,31 @@ public class InterfazCompra extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(BotonVolverC, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(311, 311, 311)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(420, 420, 420)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(39, 39, 39)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(IdUsuarioC, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(IdProductoC)
-                            .addComponent(Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(438, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BotonComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(465, 465, 465))
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(420, 420, 420)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(idUsuarioC, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(IdProductoC)
+                    .addComponent(Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addComponent(BotonVolverC, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(311, 311, 311)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 298, Short.MAX_VALUE)
+                .addComponent(LimpiarC, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,15 +168,17 @@ public class InterfazCompra extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(BotonVolverC, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(81, 81, 81)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LimpiarC, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonVolverC, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(61, 61, 61)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(IdUsuarioC, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(idUsuarioC, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IdProductoC, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,7 +188,7 @@ public class InterfazCompra extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BotonComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -211,9 +227,15 @@ public class InterfazCompra extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_BotonVolverCMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void BotonComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonComprarActionPerformed
+        
+        logica.RealizarCompra(idUsuarioC, IdProductoC, Cantidad);
+    }//GEN-LAST:event_BotonComprarActionPerformed
+
+    private void LimpiarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimpiarCActionPerformed
+        
+        logica.limpiarCompras(idUsuarioC, IdProductoC, Cantidad);
+    }//GEN-LAST:event_LimpiarCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,11 +273,12 @@ public class InterfazCompra extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonComprar;
     private javax.swing.JButton BotonVolverC;
     private javax.swing.JTextField Cantidad;
     private javax.swing.JTextField IdProductoC;
-    private javax.swing.JTextField IdUsuarioC;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton LimpiarC;
+    private javax.swing.JTextField idUsuarioC;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
