@@ -6,6 +6,7 @@ package com.mycompany.tiendatecnologica;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,7 +19,14 @@ public class InterfazProductos extends javax.swing.JFrame {
      */
     public InterfazProductos() {
         initComponents();
+        
+        Producto1.setVisible(false);
+        Producto2.setVisible(false);
+        Producto3.setVisible(false);
+        
     }
+    
+    LogicaUsuarios logica = new LogicaUsuarios();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,10 +44,11 @@ public class InterfazProductos extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         BotonVolverP = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        Imagen1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        Imagen2 = new javax.swing.JLabel();
-        Imagen3 = new javax.swing.JLabel();
+        Producto1 = new javax.swing.JLabel();
+        Categorias = new javax.swing.JComboBox<>();
+        Producto2 = new javax.swing.JLabel();
+        Producto3 = new javax.swing.JLabel();
+        BotonBuscarP = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,14 +108,25 @@ public class InterfazProductos extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel1.setText("PRODUCTOS");
 
-        Imagen1.setIcon(new javax.swing.ImageIcon("/Users/patriciaaguayo/Desktop/Tienda/TiendaTecnologica_AguayoEscuderoPatricia/TiendaTecnologica/src/main/Resources/pantalon1.png")); // NOI18N
+        Producto1.setIcon(new javax.swing.ImageIcon("/Users/patriciaaguayo/Desktop/Tienda/TiendaTecnologica_AguayoEscuderoPatricia/TiendaTecnologica/src/main/Resources/pantalon1.png")); // NOI18N
 
-        jComboBox1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona categoría", "Electrónica", "Ropa", "Funkos" }));
+        Categorias.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        Categorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE CATEGORIA", "ELECTRONICA", "ROPA", "FUNKOS" }));
+        Categorias.setToolTipText("");
 
-        Imagen2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pantalon2.png"))); // NOI18N
+        Producto2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pantalon2.png"))); // NOI18N
 
-        Imagen3.setIcon(new javax.swing.ImageIcon("/Users/patriciaaguayo/Desktop/Tienda/TiendaTecnologica_AguayoEscuderoPatricia/TiendaTecnologica/src/main/Resources/camisa1.png")); // NOI18N
+        Producto3.setIcon(new javax.swing.ImageIcon("/Users/patriciaaguayo/Desktop/Tienda/TiendaTecnologica_AguayoEscuderoPatricia/TiendaTecnologica/src/main/Resources/camisa1.png")); // NOI18N
+
+        BotonBuscarP.setBackground(new java.awt.Color(0, 0, 0));
+        BotonBuscarP.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        BotonBuscarP.setForeground(new java.awt.Color(255, 255, 255));
+        BotonBuscarP.setText("Buscar");
+        BotonBuscarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonBuscarPActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -123,15 +143,17 @@ public class InterfazProductos extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(242, 242, 242)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(396, Short.MAX_VALUE))
+                        .addComponent(Categorias, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(BotonBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(221, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(90, 90, 90)
-                .addComponent(Imagen1)
+                .addComponent(Producto1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Imagen2)
+                .addComponent(Producto2)
                 .addGap(197, 197, 197)
-                .addComponent(Imagen3)
+                .addComponent(Producto3)
                 .addGap(149, 149, 149))
         );
         jPanel1Layout.setVerticalGroup(
@@ -144,16 +166,16 @@ public class InterfazProductos extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(158, 158, 158)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Categorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(146, 146, 146)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Imagen1)
-                            .addComponent(Imagen2))
-                        .addGap(143, 143, 143)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Imagen3)))
+                    .addComponent(Producto1)
+                    .addComponent(Producto2)
+                    .addComponent(Producto3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,6 +207,16 @@ public class InterfazProductos extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonVolverPMouseClicked
+
+    private void BotonBuscarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarPActionPerformed
+        
+        try {
+        logica.buscarProductos(Categorias, Producto1, Producto2, Producto3);
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al buscar productos: " + e.getMessage());
+    }
+    }//GEN-LAST:event_BotonBuscarPActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,12 +254,13 @@ public class InterfazProductos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonBuscarP;
     private javax.swing.JButton BotonVolverP;
-    private javax.swing.JLabel Imagen1;
-    private javax.swing.JLabel Imagen2;
-    private javax.swing.JLabel Imagen3;
+    private javax.swing.JComboBox<String> Categorias;
     private javax.swing.JLabel LogoP;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel Producto1;
+    private javax.swing.JLabel Producto2;
+    private javax.swing.JLabel Producto3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

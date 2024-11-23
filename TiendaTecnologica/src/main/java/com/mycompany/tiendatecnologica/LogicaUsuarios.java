@@ -4,6 +4,9 @@
  */
 package com.mycompany.tiendatecnologica;
 
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,6 +16,10 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,10 +33,14 @@ public class LogicaUsuarios {
     ArrayList<String>CodigosUsuarios;
     ArrayList<String>CodigosProductos;
     private String codigoOriginal;
+    HashMap<Integer, String> Categorias;
+    private ArrayList<Producto> productosActuales;
     
     public LogicaUsuarios(){
         CodigosUsuarios = new ArrayList<>();
         CodigosProductos = new ArrayList<>();
+        Categorias = new HashMap<>();
+        productosActuales = new ArrayList<>();
     }
     
     // Métodos para Buscar Usuario y traer su información
@@ -479,6 +490,189 @@ public class LogicaUsuarios {
         Historial.setText("");
 
     }
+    
+    public void buscarProductos(javax.swing.JComboBox<String> Categorias, 
+                            javax.swing.JLabel Producto1, javax.swing.JLabel Producto2, 
+                            javax.swing.JLabel Producto3) {
+
+        productosActuales.clear();
+
+        String categoria = Categorias.getSelectedItem().toString().toLowerCase();
+        categoria = mayusculaPrimeraLetra(categoria);
+
+        if (categoria.equals("Seleccione categoria")) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una categoría.");
+            return;
+        }
+
+        int idCategoria = this.obtenerIdCategoria(categoria);
+
+        if (idCategoria == -1) {
+            JOptionPane.showMessageDialog(null, "Error: la categoría seleccionada no es válida.");
+            return;
+        }
+
+        String consulta = """
+            SELECT productos.idProducto, productos.nombreProducto, productos.precio, 
+                   productos.descripcion, productos.caracteristicas, imagenesProducto.imagenUrl
+            FROM productos
+            JOIN categorias ON categorias.idCategoria = productos.idCategoria
+            LEFT JOIN imagenesProducto ON imagenesProducto.idProducto = productos.idProducto
+            WHERE productos.idCategoria = ?
+        """;
+
+        try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+            ps.setInt(1, idCategoria);
+            try (ResultSet rs = ps.executeQuery()) {
+                Map<Integer, Producto> productosMap = new HashMap<>();
+
+                while (rs.next()) {
+                    int id = rs.getInt("idProducto");
+                    String nombre = rs.getString("nombreProducto");
+                    double precio = rs.getDouble("precio");
+                    String descripcion = rs.getString("descripcion");
+                    String caracteristicas = rs.getString("caracteristicas");
+                    String imagenUrl = rs.getString("imagenUrl");
+
+                    String imagen1 = imagenUrl != null && imagenUrl.endsWith("1.png") ? imagenUrl : null;
+                    String imagen2 = imagenUrl != null && imagenUrl.endsWith("2.png") ? imagenUrl : null;
+                    
+                    
+
+                    productosMap.putIfAbsent(id, new Producto(id, nombre, precio, descripcion, caracteristicas, imagen1, imagen2));
+                    
+                    
+                }
+
+                productosActuales.addAll(productosMap.values());
+            }
+
+            JLabel[] etiquetas = {Producto1, Producto2, Producto3};
+            for (int i = 0; i < etiquetas.length; i++) {
+                if (i < productosActuales.size()) {
+                    Producto producto = productosActuales.get(i);
+                    etiquetas[i].setIcon(new ImageIcon(producto.getImagenUrl1()));
+                    etiquetas[i].setToolTipText(producto.getNombre());
+                    etiquetas[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    etiquetas[i].setVisible(true);
+                    System.out.println("Imagen cargada para producto: " + producto.getImagenUrl1());
+                    System.out.println("Imagen cargada para producto: " + producto.getImagenUrl2());
+
+                    int finalI = i;
+                    etiquetas[i].addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            InterfazInfoProducto interfazProducto = new InterfazInfoProducto();
+                            interfazProducto.setProducto(productosActuales.get(finalI));
+                            interfazProducto.setVisible(true);
+                        }
+                    });
+                } else {
+                    etiquetas[i].setIcon(null);
+                    etiquetas[i].setText("Sin producto");
+                    etiquetas[i].setVisible(true);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al buscar productos.");
+        }
+    }
+    
+    /*public void setProducto(Producto producto) {
+        
+    // Supongamos que tienes etiquetas o campos de texto en tu interfaz para mostrar la información
+        
+        lblNombreProducto.setText(producto.getNombre());
+        lblPrecioProducto.setText("$" + producto.getPrecio());
+        lblDescripcionProducto.setText(producto.getDescripcion());
+        lblCaracteristicasProducto.setText(producto.getCaracteristicas());
+
+        // Configurar la imagen principal (imagenUrl2)
+        if (producto.getImagenUrl2() != null) {
+            lblImagenProducto.setIcon(new ImageIcon(producto.getImagenUrl2()));
+        } else {
+            lblImagenProducto.setIcon(null);
+            lblImagenProducto.setText("Sin imagen disponible");
+        }
+    }*/
+    
+    // Métodos para buscar y almacenar las categorias de los productos
+    
+    public boolean comprobarCategoria(int idCategoria) {
+        
+        return Categorias.containsKey(idCategoria);
+    }
+
+    public void guardarCategorias() {
+        
+        Categorias.clear();  
+
+        Connection conexion = Conexion.getConnection();  
+        String consulta = "SELECT idCategoria, nombreCategoria FROM categorias"; 
+        Statement sts = null;
+        ResultSet rs = null;
+
+        try {
+            sts = conexion.createStatement();  
+            rs = sts.executeQuery(consulta);  
+
+            while (rs.next()) {
+                int idCategoria = rs.getInt("idCategoria"); 
+                String nombreCategoria = rs.getString("nombreCategoria").trim(); 
+                Categorias.put(idCategoria, nombreCategoria); 
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar las categorias: " + e.getMessage());
+
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (sts != null) sts.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    // Método para obtener el nombre de la categoria usando su ID
+    
+    public String getNombreCategoria(int idCategoria) {
+        return Categorias.get(idCategoria); 
+    }
+
+    // Método para obtener el HashMap de categorias
+    
+    public HashMap<Integer, String> getCategorias() {
+        return Categorias;
+    }
+    
+    public int obtenerIdCategoria(String categoria) {
+       
+        guardarCategorias();
+
+        int idCategoria = -1;
+
+        for (Map.Entry<Integer, String> entry : Categorias.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(categoria)) {
+                idCategoria = entry.getKey(); 
+                break; 
+            }
+        }
+
+        return idCategoria; 
+    }
+    
+    public static String mayusculaPrimeraLetra(String palabra) {
+    
+        if (palabra == null || palabra.isEmpty()) {
+        return palabra; 
+    }
+    return palabra.substring(0, 1).toUpperCase() + palabra.substring(1).toLowerCase();
+}
     
 }
 
