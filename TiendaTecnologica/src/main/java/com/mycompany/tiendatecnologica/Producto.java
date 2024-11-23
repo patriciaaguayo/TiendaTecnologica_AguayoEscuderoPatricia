@@ -18,16 +18,18 @@ public class Producto {
     private String caracteristicas;
     private String imagenUrl1; 
     private String imagenUrl2; 
+    private int cantidad;
 
     // Constructor
     
     public Producto(int id, String nombre, double precio, String descripcion, 
-                    String caracteristicas, String imagenUrl1, String imagenUrl2) {
+                    String caracteristicas, String imagenUrl1, String imagenUrl2, int cantidad) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
         this.caracteristicas = caracteristicas;
+        this.cantidad = cantidad;
         this.imagenUrl1 = imagenUrl1;
         this.imagenUrl2 = imagenUrl2;
     }
@@ -59,5 +61,9 @@ public class Producto {
     
     public String getImagenUrl2() { 
         return imagenUrl2; 
+    }
+    
+    public int getCantidad(){
+        return cantidad;
     }
 }

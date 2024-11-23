@@ -514,7 +514,7 @@ public class LogicaUsuarios {
 
         String consulta = """
             SELECT productos.idProducto, productos.nombreProducto, productos.precio, 
-                   productos.descripcion, productos.caracteristicas, imagenesProducto.imagenUrl
+                   productos.descripcion, productos.caracteristicas, productos.inventario, imagenesProducto.imagenUrl
             FROM productos
             JOIN categorias ON categorias.idCategoria = productos.idCategoria
             LEFT JOIN imagenesProducto ON imagenesProducto.idProducto = productos.idProducto
@@ -522,25 +522,27 @@ public class LogicaUsuarios {
         """;
 
         try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+            
             ps.setInt(1, idCategoria);
+            
             try (ResultSet rs = ps.executeQuery()) {
+                
                 Map<Integer, Producto> productosMap = new HashMap<>();
 
                 while (rs.next()) {
+                    
                     int id = rs.getInt("idProducto");
                     String nombre = rs.getString("nombreProducto");
                     double precio = rs.getDouble("precio");
                     String descripcion = rs.getString("descripcion");
                     String caracteristicas = rs.getString("caracteristicas");
+                    int cantidad = rs.getInt("inventario");
                     String imagenUrl = rs.getString("imagenUrl");
 
                     String imagen1 = imagenUrl != null && imagenUrl.endsWith("1.png") ? imagenUrl : null;
                     String imagen2 = imagenUrl != null && imagenUrl.endsWith("2.png") ? imagenUrl : null;
                     
-                    
-
-                    productosMap.putIfAbsent(id, new Producto(id, nombre, precio, descripcion, caracteristicas, imagen1, imagen2));
-                    
+                    productosMap.putIfAbsent(id, new Producto(id, nombre, precio, descripcion, caracteristicas, imagen1, imagen2, cantidad));           
                     
                 }
 
@@ -548,18 +550,24 @@ public class LogicaUsuarios {
             }
 
             JLabel[] etiquetas = {Producto1, Producto2, Producto3};
+            
             for (int i = 0; i < etiquetas.length; i++) {
+                
                 if (i < productosActuales.size()) {
+                    
                     Producto producto = productosActuales.get(i);
+                    
                     etiquetas[i].setIcon(new ImageIcon(producto.getImagenUrl1()));
-                    etiquetas[i].setToolTipText(producto.getNombre());
-                    etiquetas[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    etiquetas[i].setToolTipText(producto.getNombre()); // Esto hace que al pasar el cursor aparezca el nombre del producto
+                    etiquetas[i].setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia el aspecto del cursor al de una mano
                     etiquetas[i].setVisible(true);
                     System.out.println("Imagen cargada para producto: " + producto.getImagenUrl1());
                     System.out.println("Imagen cargada para producto: " + producto.getImagenUrl2());
 
                     int finalI = i;
+                    
                     etiquetas[i].addMouseListener(new MouseAdapter() {
+                        
                         @Override
                         public void mouseClicked(MouseEvent e) {
                             InterfazInfoProducto interfazProducto = new InterfazInfoProducto();
@@ -579,24 +587,6 @@ public class LogicaUsuarios {
             JOptionPane.showMessageDialog(null, "Error al buscar productos.");
         }
     }
-    
-    /*public void setProducto(Producto producto) {
-        
-    // Supongamos que tienes etiquetas o campos de texto en tu interfaz para mostrar la información
-        
-        lblNombreProducto.setText(producto.getNombre());
-        lblPrecioProducto.setText("$" + producto.getPrecio());
-        lblDescripcionProducto.setText(producto.getDescripcion());
-        lblCaracteristicasProducto.setText(producto.getCaracteristicas());
-
-        // Configurar la imagen principal (imagenUrl2)
-        if (producto.getImagenUrl2() != null) {
-            lblImagenProducto.setIcon(new ImageIcon(producto.getImagenUrl2()));
-        } else {
-            lblImagenProducto.setIcon(null);
-            lblImagenProducto.setText("Sin imagen disponible");
-        }
-    }*/
     
     // Métodos para buscar y almacenar las categorias de los productos
     
