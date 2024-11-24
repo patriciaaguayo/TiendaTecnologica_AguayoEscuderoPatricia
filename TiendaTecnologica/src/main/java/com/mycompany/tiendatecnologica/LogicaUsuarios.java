@@ -493,7 +493,7 @@ public class LogicaUsuarios {
     
     public void buscarProductos(javax.swing.JComboBox<String> Categorias, 
                             javax.swing.JLabel Producto1, javax.swing.JLabel Producto2, 
-                            javax.swing.JLabel Producto3) {
+                            javax.swing.JLabel Producto3, InterfazProductos productos) {
 
         productosActuales.clear();
 
@@ -502,7 +502,7 @@ public class LogicaUsuarios {
         String categoria = Categorias.getSelectedItem().toString().toLowerCase();
         categoria = mayusculaPrimeraLetra(categoria);
 
-        // Validar selección de categoría
+        // Comprovar la selección de categoría
         
         if (categoria.equals("Seleccione categoria")) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una categoría.");
@@ -531,7 +531,7 @@ public class LogicaUsuarios {
 
             try (ResultSet rs = ps.executeQuery()) {
                 
-                // Mapa para asegurar un producto por ID
+                // Guardar un producto por ID
                 
                 Map<Integer, Producto> productosMap = new HashMap<>();
 
@@ -553,15 +553,15 @@ public class LogicaUsuarios {
                     
                     if (imagenUrl != null) {
                         
-                        if (imagenUrl.endsWith("1.png") && producto.getImagenUrl1() == null) {
+                        if (imagenUrl.endsWith("1.png") && producto.getImagenUrl1() == null) { // imagen 1
                             producto.setImagenUrl1(imagenUrl);
                         
-                        } else if (imagenUrl.endsWith("2.png") && producto.getImagenUrl2() == null) {
+                        } else if (imagenUrl.endsWith("2.png") && producto.getImagenUrl2() == null) { // imagen 2
                             producto.setImagenUrl2(imagenUrl);
                         }
                     }
 
-                    // Guardar el producto actualizado en el mapa
+                    // Guardar el producto actualizado en la lista
                     
                     productosMap.put(id, producto);
                 }
@@ -580,7 +580,7 @@ public class LogicaUsuarios {
             return;
         }
 
-        // Manejar etiquetas de productos
+        // Establecer las fotos de los productos por categoría
         
         JLabel[] etiquetas = {Producto1, Producto2, Producto3};
 
@@ -589,49 +589,48 @@ public class LogicaUsuarios {
             if (i < productosActuales.size()) {
                 Producto producto = productosActuales.get(i);
 
-                // Configurar la primera imagen del producto
+                // Pone la primera foto de cada producto
                 
                 if (producto.getImagenUrl1() != null && !producto.getImagenUrl1().isEmpty()) {
-                    etiquetas[i].setIcon(new ImageIcon(producto.getImagenUrl1()));
+                    etiquetas[i].setIcon(new ImageIcon(producto.getImagenUrl1())); 
                 
                 } else {
                     etiquetas[i].setIcon(null);
-                    etiquetas[i].setText("Sin imagen disponible");
+                    etiquetas[i].setText("Sin imagen disponible"); // Avisa si no se encuentra imagen
                 }
 
-                // Configurar el nombre del producto como tooltip
+                etiquetas[i].setToolTipText(producto.getNombre()); // Hace que al pasar el cursor muestre el nombre del producto
+               
+                etiquetas[i].setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambiar el cursor al de una mano  
                 
-                etiquetas[i].setToolTipText(producto.getNombre());
+                etiquetas[i].setVisible(true); // Hace visibles las fotos de los productos
 
-                // Cambiar el cursor al de una mano
-                
-                etiquetas[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-                // Hacer visible la etiqueta
-                
-                etiquetas[i].setVisible(true);
-
-                // Imprimir información de las imágenes para depuración
+                // Muestra por consola las rutas de las dos fotos por producto para asegurar que no haya error
                 
                 System.out.println("Imagen cargada para producto: " + producto.getImagenUrl1());
                 System.out.println("Imagen secundaria para producto: " + producto.getImagenUrl2());
 
-                // Agregar evento al hacer clic
+                // Agrega un evento para que al hacer clic nos dirija a otra ventana con la información de ese producto
                 
-                int finalI = i; // Variable final para usar dentro del listener
+                int finalI = i; // Obtene que la id del producto que se ha clicado
+                
                 etiquetas[i].addMouseListener(new MouseAdapter() {
+                    
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         InterfazInfoProducto interfazProducto = new InterfazInfoProducto();
-                        interfazProducto.setProducto(productosActuales.get(finalI));
-                        interfazProducto.setVisible(true);
+                        
+                        // Así se puede indentidicar que producto se ha seleccionado y obtener sus datos
+                        
+                        interfazProducto.setProducto(productosActuales.get(finalI)); 
+
+                        interfazProducto.setVisible(true); // Hace visible la ventana con la info de ese producto
+                        productos.dispose(); // Cierra la ventana anterior y así no hay bucles
                     }
                 });
                 
-            } else {
-                
-                // Limpiar etiquetas sobrantes
-                
+            } else { // Cuando no hay más productos
+            
                 etiquetas[i].setIcon(null);
                 etiquetas[i].setText("Sin producto");
                 etiquetas[i].setVisible(false);

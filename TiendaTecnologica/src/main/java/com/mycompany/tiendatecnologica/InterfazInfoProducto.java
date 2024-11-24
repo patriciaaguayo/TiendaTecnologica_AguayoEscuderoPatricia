@@ -27,22 +27,24 @@ public class InterfazInfoProducto extends javax.swing.JFrame {
         Precio.setText(productoSeleccionado.getPrecio() + " €");
         Descripcion.setText(productoSeleccionado.getDescripcion());
        
-        // Procesar características: reemplazar comas con saltos de línea y capitalizar cada línea
+        // Configurar la salida de características cambiando comas con saltos de línea y poner en mayuscula la primera letra de cada línea
         
         String caracteristicasOriginal = productoSeleccionado.getCaracteristicas();
         String[] lineas = caracteristicasOriginal.split(","); // Dividir por comas
 
-        StringBuilder caracteristicasFormateadas = new StringBuilder("\n"); // StringBuilder para construir el texto
+        StringBuilder caracteristicasFormateadas = new StringBuilder("\n"); // StringBuilder para construir la salida del texto
 
         for (int i = 0; i < lineas.length; i++) {
-            String linea = lineas[i].trim(); // Eliminar espacios innecesarios
+            String linea = lineas[i].trim(); 
             if (!linea.isEmpty()) {
-                // Capitalizar la primera letra
+                
+                // Poner en mayúsucla la primera letra
+                
                 caracteristicasFormateadas.append(Character.toUpperCase(linea.charAt(0)))
                                           .append(linea.substring(1));
 
-                // Agregar salto de línea solo si no es la última línea
-                
+                // Agregar salto de línea solo si no es la última línea para que no haya espacio excesivo por abajo               
+   
                 
                 if (i < lineas.length - 1) {
                     caracteristicasFormateadas.append("\n\n");
@@ -50,14 +52,15 @@ public class InterfazInfoProducto extends javax.swing.JFrame {
             }
         }
 
-        Caracteristicas.setText(caracteristicasFormateadas.toString());
+        Caracteristicas.setText(caracteristicasFormateadas.toString()); 
         
         Cantidad.setText(String.valueOf(productoSeleccionado.getCantidad()));
 
-        // Configurar las imágenes
+        // Configurar las imágenes 1 y 2
         
         if (productoSeleccionado.getImagenUrl1() != null) {
             Imagen1.setIcon(new ImageIcon(productoSeleccionado.getImagenUrl1()));
+        
         } else {
             Imagen1.setIcon(null);
         }
@@ -65,6 +68,7 @@ public class InterfazInfoProducto extends javax.swing.JFrame {
         if (productoSeleccionado.getImagenUrl2() != null) {
             Imagen2.setIcon(new ImageIcon(productoSeleccionado.getImagenUrl2()));
             System.out.println(productoSeleccionado.getImagenUrl2());
+        
         } else {
             Imagen2.setIcon(null);
         }

@@ -212,7 +212,7 @@ public class InterfazProductos extends javax.swing.JFrame {
         
         try {
             
-             logica.buscarProductos(Categorias, Producto1, Producto2, Producto3);
+             logica.buscarProductos(Categorias, Producto1, Producto2, Producto3, this);
              
         } catch (Exception e) {
              e.printStackTrace();
