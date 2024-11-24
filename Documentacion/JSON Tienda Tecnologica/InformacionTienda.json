@@ -4,7 +4,7 @@
         "categorias": [
             {
                 "id": 1,
-                "nombre": "Electrónica",
+                "nombre": "Electronica",
                 "productos": [
                     {
                         "id": 101,
@@ -16,7 +16,7 @@
                             "camara": "48 MP",
                             "bateria": "4500 mAh"
                         },
-                        "imagenes": ["imagen1.jpg", "imagen2.jpg"],
+                        "imagenes": ["src/main/Resources/Electronica/smartphone1.png", "src/main/Resources/Electronica/smartphone2.png"],
                         "inventario": 10
                     }, 
                     
@@ -30,7 +30,7 @@
                                 "camara": "30 MP",
                                 "bateria": "5000 mAh"
                         },
-                        "imagenes": ["imagen3.jpg", "imagen4.jpg"], 
+                        "imagenes": ["src/main/Resources/Electronica/motorola1.png", "src/main/Resources/Electronica/motorola2.png"], 
                         "inventario": 15
                     },
 
@@ -44,7 +44,7 @@
                             "camara": "40 MP",
                             "bateria": "4800 mAh"
                         },
-                        "imagenes":["imagen5.jpg", "imagen6.jpg"],
+                        "imagenes":["src/main/Resources/Electronica/nokia1.png", "src/main/Resources/Electronica/nokia2.png"],
                         "inventario": 12
                     }
                 ]
@@ -64,7 +64,7 @@
                             "color": "Verde",
                             "corte": "Carioca"
                         },
-                        "imagenes": ["imagen7.jpg", "imagen8.jpg"],
+                        "imagenes": ["src/main/Resources/Ropa/camisa1.png", "src/main/Resources/Ropa/camisa2.png"],
                         "inventario": 14
                     }, 
                     
@@ -78,7 +78,7 @@
                                 "color": "Azul Claro",
                                 "corte": "Pitillo"
                         },
-                        "imagenes": ["imagen9.jpg", "imagen10.jpg"], 
+                        "imagenes": ["src/main/Resources/Ropa/pantalon1.png", "src/main/Resources/Ropa/pantalon2.png"], 
                         "inventario": 11
                     },
 
@@ -92,7 +92,7 @@
                             "color": "Azul Marino",
                             "corte": "Bombacho"
                         },
-                        "imagenes":["imagen11.jpg", "imagen12.jpg"],
+                        "imagenes":["src/main/Resources/Ropa/jersey1.png", "src/main/Resources/Ropa/jersey2.png"],
                         "inventario": 18
                     }
                 ]
@@ -112,7 +112,7 @@
                             "numero": "1493",
                             "personaje": "Mickey"
                         },
-                        "imagenes": ["imagen13.jpg", "imagen14.jpg"],
+                        "imagenes": ["src/main/Resources/Funkos/mickey1.png", "src/main/Resources/Funkos/mickey2.png"],
                         "inventario": 20
                     }, 
                     
@@ -126,7 +126,7 @@
                                 "numero": "387",
                                 "personaje": "Yami Yugi"
                         },
-                        "imagenes": ["imagen15.jpg", "imagen16.jpg"], 
+                        "imagenes": ["src/main/Resources/Funkos/yugi1.png", "src/main/Resources/Funkos/yugi2.png"], 
                         "inventario": 23
                     },
 
@@ -140,7 +140,7 @@
                             "numero": "222",
                             "personaje": "Spider-Man"
                         },
-                        "imagenes":["imagen17.jpg", "imagen18.jpg"],
+                        "imagenes":["src/main/Resources/Funkos/spiderman1.png", "src/main/Resources/Funkos/spiderman2.png"],
                         "inventario": 30
                     }
                 ]
