@@ -211,10 +211,12 @@ public class InterfazProductos extends javax.swing.JFrame {
     private void BotonBuscarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarPActionPerformed
         
         try {
-        logica.buscarProductos(Categorias, Producto1, Producto2, Producto3);
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error al buscar productos: " + e.getMessage());
+            
+             logica.buscarProductos(Categorias, Producto1, Producto2, Producto3);
+             
+        } catch (Exception e) {
+             e.printStackTrace();
+             JOptionPane.showMessageDialog(this, "Error al buscar productos: " + e.getMessage());
     }
     }//GEN-LAST:event_BotonBuscarPActionPerformed
 

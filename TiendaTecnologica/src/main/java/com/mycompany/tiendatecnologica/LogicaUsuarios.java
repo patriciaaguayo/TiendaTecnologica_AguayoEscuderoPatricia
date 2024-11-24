@@ -497,9 +497,13 @@ public class LogicaUsuarios {
 
         productosActuales.clear();
 
+        // Obtener la categoría seleccionada 
+        
         String categoria = Categorias.getSelectedItem().toString().toLowerCase();
         categoria = mayusculaPrimeraLetra(categoria);
 
+        // Validar selección de categoría
+        
         if (categoria.equals("Seleccione categoria")) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una categoría.");
             return;
@@ -514,7 +518,8 @@ public class LogicaUsuarios {
 
         String consulta = """
             SELECT productos.idProducto, productos.nombreProducto, productos.precio, 
-                   productos.descripcion, productos.caracteristicas, productos.inventario, imagenesProducto.imagenUrl
+                   productos.descripcion, productos.caracteristicas, productos.inventario, 
+                   imagenesProducto.imagenUrl
             FROM productos
             JOIN categorias ON categorias.idCategoria = productos.idCategoria
             LEFT JOIN imagenesProducto ON imagenesProducto.idProducto = productos.idProducto
@@ -522,15 +527,15 @@ public class LogicaUsuarios {
         """;
 
         try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-            
             ps.setInt(1, idCategoria);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
+                
+                // Mapa para asegurar un producto por ID
                 
                 Map<Integer, Producto> productosMap = new HashMap<>();
 
                 while (rs.next()) {
-                    
                     int id = rs.getInt("idProducto");
                     String nombre = rs.getString("nombreProducto");
                     double precio = rs.getDouble("precio");
@@ -539,52 +544,98 @@ public class LogicaUsuarios {
                     int cantidad = rs.getInt("inventario");
                     String imagenUrl = rs.getString("imagenUrl");
 
-                    String imagen1 = imagenUrl != null && imagenUrl.endsWith("1.png") ? imagenUrl : null;
-                    String imagen2 = imagenUrl != null && imagenUrl.endsWith("2.png") ? imagenUrl : null;
+                    // Obtener producto existente o crear uno nuevo
                     
-                    productosMap.putIfAbsent(id, new Producto(id, nombre, precio, descripcion, caracteristicas, imagen1, imagen2, cantidad));           
+                    Producto producto = productosMap.getOrDefault(id, 
+                        new Producto(id, nombre, precio, descripcion, caracteristicas, null, null, cantidad));
+
+                    // Asignar imágenes correctamente
                     
+                    if (imagenUrl != null) {
+                        
+                        if (imagenUrl.endsWith("1.png") && producto.getImagenUrl1() == null) {
+                            producto.setImagenUrl1(imagenUrl);
+                        
+                        } else if (imagenUrl.endsWith("2.png") && producto.getImagenUrl2() == null) {
+                            producto.setImagenUrl2(imagenUrl);
+                        }
+                    }
+
+                    // Guardar el producto actualizado en el mapa
+                    
+                    productosMap.put(id, producto);
                 }
 
                 productosActuales.addAll(productosMap.values());
             }
-
-            JLabel[] etiquetas = {Producto1, Producto2, Producto3};
             
-            for (int i = 0; i < etiquetas.length; i++) {
-                
-                if (i < productosActuales.size()) {
-                    
-                    Producto producto = productosActuales.get(i);
-                    
-                    etiquetas[i].setIcon(new ImageIcon(producto.getImagenUrl1()));
-                    etiquetas[i].setToolTipText(producto.getNombre()); // Esto hace que al pasar el cursor aparezca el nombre del producto
-                    etiquetas[i].setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia el aspecto del cursor al de una mano
-                    etiquetas[i].setVisible(true);
-                    System.out.println("Imagen cargada para producto: " + producto.getImagenUrl1());
-                    System.out.println("Imagen cargada para producto: " + producto.getImagenUrl2());
-
-                    int finalI = i;
-                    
-                    etiquetas[i].addMouseListener(new MouseAdapter() {
-                        
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            InterfazInfoProducto interfazProducto = new InterfazInfoProducto();
-                            interfazProducto.setProducto(productosActuales.get(finalI));
-                            interfazProducto.setVisible(true);
-                        }
-                    });
-                } else {
-                    etiquetas[i].setIcon(null);
-                    etiquetas[i].setText("Sin producto");
-                    etiquetas[i].setVisible(true);
-                }
-            }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al buscar productos.");
+            JOptionPane.showMessageDialog(null, "Error al buscar productos: " + e.getMessage());
+            return;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error inesperado: " + e.getMessage());
+            return;
+        }
+
+        // Manejar etiquetas de productos
+        
+        JLabel[] etiquetas = {Producto1, Producto2, Producto3};
+
+        for (int i = 0; i < etiquetas.length; i++) {
+            
+            if (i < productosActuales.size()) {
+                Producto producto = productosActuales.get(i);
+
+                // Configurar la primera imagen del producto
+                
+                if (producto.getImagenUrl1() != null && !producto.getImagenUrl1().isEmpty()) {
+                    etiquetas[i].setIcon(new ImageIcon(producto.getImagenUrl1()));
+                
+                } else {
+                    etiquetas[i].setIcon(null);
+                    etiquetas[i].setText("Sin imagen disponible");
+                }
+
+                // Configurar el nombre del producto como tooltip
+                
+                etiquetas[i].setToolTipText(producto.getNombre());
+
+                // Cambiar el cursor al de una mano
+                
+                etiquetas[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                // Hacer visible la etiqueta
+                
+                etiquetas[i].setVisible(true);
+
+                // Imprimir información de las imágenes para depuración
+                
+                System.out.println("Imagen cargada para producto: " + producto.getImagenUrl1());
+                System.out.println("Imagen secundaria para producto: " + producto.getImagenUrl2());
+
+                // Agregar evento al hacer clic
+                
+                int finalI = i; // Variable final para usar dentro del listener
+                etiquetas[i].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        InterfazInfoProducto interfazProducto = new InterfazInfoProducto();
+                        interfazProducto.setProducto(productosActuales.get(finalI));
+                        interfazProducto.setVisible(true);
+                    }
+                });
+                
+            } else {
+                
+                // Limpiar etiquetas sobrantes
+                
+                etiquetas[i].setIcon(null);
+                etiquetas[i].setText("Sin producto");
+                etiquetas[i].setVisible(false);
+            }
         }
     }
     

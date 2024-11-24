@@ -55,8 +55,16 @@ public class Producto {
         return caracteristicas; 
     }
     
+    public void setImagenUrl1(String url1){
+        this.imagenUrl1 = url1;
+    }
+    
     public String getImagenUrl1() { 
         return imagenUrl1; 
+    }
+    
+     public void setImagenUrl2(String url2){
+        this.imagenUrl2 = url2;
     }
     
     public String getImagenUrl2() { 
