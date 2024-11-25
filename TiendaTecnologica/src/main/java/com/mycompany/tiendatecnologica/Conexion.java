@@ -21,7 +21,7 @@ public class Conexion {
     private static String puertoIlerna = "3307";
     private static String puertoCasa = "3306";
     private static String bbdd = "TiendaOnline";
-    //private static String urlIlerna = "jdbc:mysql://" + servidor+ ":" +puertoIlerna + "/"+bbdd;
+   // private static String urlIlerna = "jdbc:mysql://" + servidor+ ":" +puertoIlerna + "/"+bbdd;
     private static String urlCasa = "jdbc:mysql://" + servidor+ ":" +puertoCasa + "/"+bbdd;
     
     private static String driver = "com.mysql.cj.jdbc.Driver";

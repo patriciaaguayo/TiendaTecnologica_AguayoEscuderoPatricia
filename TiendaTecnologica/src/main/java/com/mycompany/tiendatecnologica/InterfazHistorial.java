@@ -17,7 +17,8 @@ public class InterfazHistorial extends javax.swing.JFrame {
      * Creates new form InterfazHistorial
      */
     public InterfazHistorial() {
-        initComponents();
+        initComponents();   
+        this.setResizable(false);
     }
     
     LogicaUsuarios logica = new LogicaUsuarios();

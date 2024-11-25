@@ -17,7 +17,8 @@ public class InterfazCompra extends javax.swing.JFrame {
      * Creates new form InterfazCompra
      */
     public InterfazCompra() {
-        initComponents();
+        initComponents();    
+        this.setResizable(false);
     }
     
     LogicaUsuarios logica = new LogicaUsuarios();

@@ -27,6 +27,8 @@ public class InterfazInicio extends javax.swing.JFrame {
         CrearBBDD bbdd = new CrearBBDD(conex);
         bbdd.insertarDatos();
         bbdd.mostrarBBDD();
+        
+        this.setResizable(false);
     }
 
     /**

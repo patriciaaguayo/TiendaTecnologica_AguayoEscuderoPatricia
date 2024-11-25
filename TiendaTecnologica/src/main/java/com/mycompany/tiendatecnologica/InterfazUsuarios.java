@@ -17,7 +17,8 @@ public class InterfazUsuarios extends javax.swing.JFrame {
      * Creates new form InterfazUsuarios
      */
     public InterfazUsuarios() {
-        initComponents();
+        initComponents();  
+        this.setResizable(false);
     }
     
     LogicaUsuarios logica = new LogicaUsuarios();
