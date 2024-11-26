@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="TiendaTecnologica">
+  <ClassDiagramComponents>
+    <Class name="Conexion" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="482.0" yPosition="315.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private" isStatic="true"/>
+        <Field name="usuario" type="String" visibility="private" isStatic="true"/>
+        <Field name="pass" type="String" visibility="private" isStatic="true"/>
+        <Field name="servidor" type="String" visibility="private" isStatic="true"/>
+        <Field name="puertoIlerna" type="String" visibility="private" isStatic="true"/>
+        <Field name="puertoCasa" type="String" visibility="private" isStatic="true"/>
+        <Field name="bbdd" type="String" visibility="private" isStatic="true"/>
+        <Field name="urlCasa" type="String" visibility="private" isStatic="true"/>
+        <Field name="driver" type="String" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getConnection" returnType="Connection" visibility="public" isStatic="true"/>
+        <Method name="closeConnection" returnType="void" visibility="public" isStatic="true"/>
+      </Methods>
+    </Class>
+    <Class name="CrearBBDD" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="2300.0" yPosition="229.0">
+      <Fields>
+        <Field name="conexion" type="Connection" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Conexion" name="conex"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="insertarDatos" returnType="void" visibility="public"/>
+        <Method name="insertarTienda" returnType="void" visibility="public">
+          <Argument type="JsonNode" name="tiendaNode"/>
+        </Method>
+        <Method name="insertarCategorias" returnType="void" visibility="public">
+          <Argument type="JsonNode" name="categoriasNode"/>
+        </Method>
+        <Method name="insertarProductos" returnType="void" visibility="public">
+          <Argument type="JsonNode" name="productosNode"/>
+          <Argument type="int" name="idCategoria"/>
+        </Method>
+        <Method name="insertarImagenesProducto" returnType="void" visibility="public">
+          <Argument type="JsonNode" name="imagenesNode"/>
+          <Argument type="int" name="productoId"/>
+        </Method>
+        <Method name="insertarUsuario" returnType="void" visibility="public">
+          <Argument type="JsonNode" name="usuarioNode"/>
+        </Method>
+        <Method name="insertarDireccion" returnType="void" visibility="public">
+          <Argument type="JsonNode" name="direccionNode"/>
+          <Argument type="int" name="usuarioId"/>
+        </Method>
+        <Method name="insertarHistorialCompras" returnType="void" visibility="public">
+          <Argument type="JsonNode" name="historialComprasNode"/>
+          <Argument type="int" name="idUsuario"/>
+        </Method>
+        <Method name="mostrarBBDD" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="InterfazCompra" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="1983.0" yPosition="652.0">
+      <Fields>
+        <Field name="logica" type="LogicaCompras" visibility="package"/>
+        <Field name="BotonComprar" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonVolverC" type="javax.swing.JButton" visibility="private"/>
+        <Field name="Cantidad" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="IdProductoC" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="LimpiarC" type="javax.swing.JButton" visibility="private"/>
+        <Field name="Logo" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="idUsuarioC" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="jLabel1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel2" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel3" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel4" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jPanel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel2" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel3" type="javax.swing.JPanel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents void" visibility="private"/>
+        <Method name="BotonVolverCActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonVolverCMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonComprarActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="LimpiarCActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="InterfazHistorial" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="3038.0" yPosition="406.0">
+      <Fields>
+        <Field name="logica" type="LogicaHistorial" visibility="package"/>
+        <Field name="BotonBuscarH" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonLimpiarH" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonVolverH" type="javax.swing.JButton" visibility="private"/>
+        <Field name="Historial" type="javax.swing.JTextArea" visibility="private"/>
+        <Field name="Logo" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="idUsuarioH" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="jLabel1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel2" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jPanel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel2" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel3" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jScrollPane2" type="javax.swing.JScrollPane" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents void" visibility="private"/>
+        <Method name="BotonVolverHMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonBuscarHActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonLimpiarHActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="InterfazInfoProducto" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="3076.0" yPosition="1096.0">
+      <Fields>
+        <Field name="BotonVolverI" type="javax.swing.JButton" visibility="private"/>
+        <Field name="Cantidad" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Caracteristicas" type="javax.swing.JTextArea" visibility="private"/>
+        <Field name="Descripcion" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Imagen1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Imagen2" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Inicio" type="javax.swing.JButton" visibility="private"/>
+        <Field name="LogoI" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Nombre" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Precio" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel4" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jPanel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel2" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel3" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jScrollPane1" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="tDescripcion" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="tStock" type="javax.swing.JLabel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setProducto" returnType="void" visibility="public">
+          <Argument type="Producto" name="productoSeleccionado"/>
+        </Method>
+        <Method name="initComponents" returnType="// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents void" visibility="private"/>
+        <Method name="BotonVolverIActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonVolverIMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="InicioMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="InterfazInicio" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="1224.0" yPosition="125.0">
+      <Fields>
+        <Field name="conex" type="Conexion" visibility="package"/>
+        <Field name="BotonComprar" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonHistorial" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonProductos" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonSalir" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonUsuarios" type="javax.swing.JButton" visibility="private"/>
+        <Field name="Logo" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jPanel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel2" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel3" type="javax.swing.JPanel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents void" visibility="private"/>
+        <Method name="BotonSalirMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonUsuariosActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonHistorialActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonComprarActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonProductosActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonProductosMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonComprarMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonUsuariosMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonHistorialMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="InterfazProductos" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="136.0" yPosition="1680.0">
+      <Fields>
+        <Field name="logica" type="LogicaProductos" visibility="package"/>
+        <Field name="BotonBuscarP" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonVolverP" type="javax.swing.JButton" visibility="private"/>
+        <Field name="Categorias" type="javax.swing.JComboBox&lt;String&gt;" visibility="private"/>
+        <Field name="LogoP" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Producto1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Producto2" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="Producto3" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel2" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel3" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jPanel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel2" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel3" type="javax.swing.JPanel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents void" visibility="private"/>
+        <Method name="BotonVolverPMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonBuscarPActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="InterfazUsuarios" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="54.0" yPosition="870.0">
+      <Fields>
+        <Field name="logica" type="LogicaUsuarios" visibility="package"/>
+        <Field name="BotonBuscarU" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonLimpiarU" type="javax.swing.JButton" visibility="private"/>
+        <Field name="BotonVolverU" type="javax.swing.JButton" visibility="private"/>
+        <Field name="DireccionUsuario" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="EmailUsuario" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="Logo" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="NombreUsuario" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="idUsuarioU" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="jLabel1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel2" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel3" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel4" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel5" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jPanel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel2" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="jPanel3" type="javax.swing.JPanel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents void" visibility="private"/>
+        <Method name="BotonVolverUMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="BotonBuscarUActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="BotonLimpiarUActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="LogicaUsuarios" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="1132.0" yPosition="1595.0">
+      <Fields>
+        <Field name="conex" type="Conexion" visibility="private"/>
+        <Field name="conexion" type="Connection" visibility="private"/>
+        <Field name="CodigosUsuarios" type="ArrayList&lt;String&gt;" visibility="package"/>
+        <Field name="codigoOriginal" type="String" visibility="private"/>
+        <Field name="Categorias" type="HashMap" visibility="private"/>
+        <Field name="productosActuales" type="ArrayList&lt;Producto&gt;" visibility="private"/>
+        <Field name="CodigosProductos" type="ArrayList&lt;String&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="BuscarUsuario" returnType="void" visibility="public">
+          <Argument type="javax.swing.JTextField" name="idUsuarioU"/>
+          <Argument type="javax.swing.JTextField" name="emailUsuario"/>
+          <Argument type="javax.swing.JTextField" name="direccionUsuario"/>
+          <Argument type="javax.swing.JTextField" name="nombreUsuario"/>
+        </Method>
+        <Method name="datosUsuario" returnType="void" visibility="public">
+          <Argument type="int" name="codigoUsuario"/>
+          <Argument type="javax.swing.JTextField" name="idUsuarioU"/>
+          <Argument type="javax.swing.JTextField" name="emailUsuario"/>
+          <Argument type="javax.swing.JTextField" name="direccionUsuario"/>
+          <Argument type="javax.swing.JTextField" name="nombreUsuario"/>
+        </Method>
+        <Method name="limpiarUsuarios" returnType="void" visibility="public">
+          <Argument type="javax.swing.JTextField" name="idUsuarioU"/>
+          <Argument type="javax.swing.JTextField" name="emailUsuario"/>
+          <Argument type="javax.swing.JTextField" name="direccionUsuario"/>
+          <Argument type="javax.swing.JTextField" name="nombreUsuario"/>
+        </Method>
+        <Method name="guardarCodigosUsuarios" returnType="void" visibility="public"/>
+        <Method name="comprobarCodigoUsuario" returnType="boolean" visibility="public">
+          <Argument type="String" name="codigoIngresado"/>
+        </Method>
+        <Method name="BuscarUsuarioHistorial" returnType="void" visibility="public">
+          <Argument type="javax.swing.JTextField" name="idUsuarioH"/>
+          <Argument type="javax.swing.JTextArea" name="Historial"/>
+        </Method>
+        <Method name="buscarHistorial" returnType="void" visibility="public">
+          <Argument type="int" name="codigoUsuario"/>
+          <Argument type="javax.swing.JTextField" name="idUsuarioH"/>
+          <Argument type="javax.swing.JTextArea" name="Historial"/>
+        </Method>
+        <Method name="limpiarHistorial" returnType="void" visibility="public">
+          <Argument type="javax.swing.JTextField" name="idUsuarioH"/>
+          <Argument type="javax.swing.JTextArea" name="Historial"/>
+        </Method>
+        <Method name="RealizarCompra" returnType="void" visibility="public">
+          <Argument type="javax.swing.JTextField" name="idUsuarioC"/>
+          <Argument type="javax.swing.JTextField" name="idProductoC"/>
+          <Argument type="javax.swing.JTextField" name="Cantidad"/>
+        </Method>
+        <Method name="insertarCompra" returnType="void" visibility="public">
+          <Argument type="int" name="idUsuario"/>
+          <Argument type="int" name="idProducto"/>
+          <Argument type="int" name="Cantidad"/>
+        </Method>
+        <Method name="limpiarCompras" returnType="void" visibility="public">
+          <Argument type="javax.swing.JTextField" name="idUsuarioC"/>
+          <Argument type="javax.swing.JTextField" name="idProductoC"/>
+          <Argument type="javax.swing.JTextField" name="Cantidad"/>
+        </Method>
+        <Method name="guardarCodigosProductos" returnType="void" visibility="public"/>
+        <Method name="comprobarCodigoProducto" returnType="boolean" visibility="public">
+          <Argument type="String" name="codigoIngresado"/>
+        </Method>
+        <Method name="mayusculaPrimeraLetra" returnType="String" visibility="public">
+          <Argument type="String" name="palabra"/>
+        </Method>
+        <Method name="buscarProductos" returnType="void" visibility="public">
+          <Argument type="javax.swing.JComboBox&lt;String&gt;" name="Categorias"/>
+          <Argument type="javax.swing.JLabel" name="Producto1"/>
+          <Argument type="javax.swing.JLabel" name="Producto2"/>
+          <Argument type="javax.swing.JLabel" name="Producto3"/>
+          <Argument type="InterfazProductos" name="productos"/>
+        </Method>
+        <Method name="comprobarCategoria" returnType="boolean" visibility="public">
+          <Argument type="int" name="Categoria"/>
+        </Method>
+        <Method name="guardarCatergorias" returnType="void" visibility="public"/>
+        <Method name="getNombreCategoria" returnType="String" visibility="public">
+          <Argument type="int" name="idCategoria"/>
+        </Method>
+        <Method name="getCategorias" returnType="HashMap" visibility="public"/>
+        <Method name="obtenerIdCategoria" returnType="int" visibility="public">
+          <Argument type="String" name="categoria"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Producto" package="com.mycompany.tiendatecnologica" visibility="public" xPosition="3000.0" yPosition="1952.0">
+      <Fields>
+        <Field name="id" type="int" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="precio" type="double" visibility="private"/>
+        <Field name="descripcion" type="String" visibility="private"/>
+        <Field name="caracteristicas" type="String" visibility="private"/>
+        <Field name="imagenUrl1" type="String" visibility="private"/>
+        <Field name="imagenUrl2" type="String" visibility="private"/>
+        <Field name="cantidad" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="double" name="precio"/>
+          <Argument type="String" name="descripcion"/>
+          <Argument type="String" name="caracteristicas"/>
+          <Argument type="String" name="imagenUrl1"/>
+          <Argument type="String" name="imagenUrl2"/>
+          <Argument type="int" name="cantidad"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getId" returnType="int" visibility="public"/>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getPrecio" returnType="double" visibility="public"/>
+        <Method name="getDescripcion" returnType="String" visibility="public"/>
+        <Method name="getCaracteristicas" returnType="String" visibility="public"/>
+        <Method name="setImagenUrl1" returnType="void" visibility="public">
+          <Argument type="String" name="url1"/>
+        </Method>
+        <Method name="getImagenUrl1" returnType="String" visibility="public"/>
+        <Method name="setImagenUrl2" returnType="void" visibility="public">
+          <Argument type="String" name="url2"/>
+        </Method>
+        <Method name="getImagenUrl2" returnType="String" visibility="public"/>
+        <Method name="getCantidad" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="logica" source="com.mycompany.tiendatecnologica.InterfazUsuarios" target="com.mycompany.tiendatecnologica.LogicaUsuarios" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="logica" source="com.mycompany.tiendatecnologica.InterfazHistorial" target="com.mycompany.tiendatecnologica.LogicaUsuarios" type="Aggregation" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="logica" source="com.mycompany.tiendatecnologica.InterfazCompra" target="com.mycompany.tiendatecnologica.LogicaUsuarios" type="Aggregation" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="conex" source="com.mycompany.tiendatecnologica.InterfazInicio" target="com.mycompany.tiendatecnologica.Conexion" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="conex" source="com.mycompany.tiendatecnologica.CrearBBDD" target="com.mycompany.tiendatecnologica.InterfazInicio" type="Aggregation" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="productos" source="com.mycompany.tiendatecnologica.InterfazProductos" target="com.mycompany.tiendatecnologica.LogicaUsuarios" type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="conex" source="com.mycompany.tiendatecnologica.LogicaUsuarios" target="com.mycompany.tiendatecnologica.Conexion" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="productosActuales" source="com.mycompany.tiendatecnologica.LogicaUsuarios" target="com.mycompany.tiendatecnologica.Producto" type="Aggregation" sourceCardinality="0..1" targetCardinality="0..*" collectionType="List"/>
+    <HasRelation name="producto" source="com.mycompany.tiendatecnologica.LogicaUsuarios" target="com.mycompany.tiendatecnologica.InterfazInfoProducto" type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="productoSeleccionado" source="com.mycompany.tiendatecnologica.InterfazInfoProducto" target="com.mycompany.tiendatecnologica.Producto" type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
