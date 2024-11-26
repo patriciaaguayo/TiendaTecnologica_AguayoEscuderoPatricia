@@ -623,9 +623,9 @@ public class LogicaUsuarios {
                         // Así se puede indentidicar que producto se ha seleccionado y obtener sus datos
                         
                         interfazProducto.setProducto(productosActuales.get(finalI)); 
-
-                        interfazProducto.setVisible(true); // Hace visible la ventana con la info de ese producto
                         productos.dispose(); // Cierra la ventana anterior y así no hay bucles
+                        interfazProducto.setVisible(true); // Hace visible la ventana con la info de ese producto
+                        
                     }
                 });
                 
